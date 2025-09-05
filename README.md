@@ -22,21 +22,21 @@ NickgenomToken hadir sebagai **jembatan antara AI & blockchain**, mendorong adop
 - Transparansi on-chain penuh dengan kontrak terverifikasi.  
 
 ## 🛠️ Deploy & Verifikasi
-1. Compile dengan Solidity **0.8.20**, Optimization ON (200).  
-2. Deploy di BNB Smart Chain (Testnet lalu Mainnet).  
-3. Verify & Publish kontrak di [BscScan](https://bscscan.com).  
+Kontrak sudah dideploy ke **BNB Smart Chain Mainnet** dan diverifikasi di BscScan.  
+👉 [Lihat kontrak di BscScan](https://bscscan.com/address/0x0353ad4cad5548de4230e36d86ed5536a0baca16#code)
 
 ## 📌 Informasi Kontrak
 - **Name**: Nickgenom  
 - **Symbol**: NGM  
 - **Supply**: 1,000,000,000,000 NGM (fixed)  
 - **Chain**: BNB Smart Chain (BEP-20)  
+- **Contract Address**: `0x0353ad4cad5548de4230e36d86ed5536a0baca16`
 
 ## 🧭 Getting Started
 - Buka MetaMask / TrustWallet  
 - Pilih **BNB Smart Chain (BEP-20)**  
 - Klik **Import Token**  
-- Masukkan alamat kontrak hasil deploy (setelah kontrak Nickgenom dipublish)  
+- Masukkan alamat kontrak: `0x0353ad4cad5548de4230e36d86ed5536a0baca16`  
 - Token NGM akan muncul di wallet Anda
 
 ## 👥 Kontributor
