@@ -1,0 +1,33 @@
+name: Verify on BscScan
+
+on:
+  workflow_dispatch:
+    inputs:
+      network:
+        description: "Network (bsc atau bscTestnet)"
+        required: true
+        default: "bsc"
+        type: choice
+        options: [bsc, bscTestnet]
+      address:
+        description: "Alamat kontrak yang sudah dideploy"
+        required: true
+        type: string
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 18, cache: "npm" }
+      - run: npm ci
+      - name: Verify
+        env:
+          BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
+        run: |
+          if [ "${{ inputs.network }}" = "bsc" ]; then
+            npx hardhat verify --network bsc ${{ inputs.address }}
+          else
+            npx hardhat verify --network bscTestnet ${{ inputs.address }}
+          fi
