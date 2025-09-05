@@ -11,15 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: Install solc
-        run: npm install -g solc
-      - name: Check solc version
-        run: solc --version
-      - name: Compile Contracts
-        run: |
-          echo "Compiling NickgenomPermit.sol..."
-          solc --version
+          # cache npm optional; kalau belum ada package-lock.json bisa hapus baris ini
+          # cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Compile with Hardhat
+        run: npx hardhat compile
+
+      # (Opsional) tampilkan versi compiler yang dipakai Hardhat
+      - name: Show Solidity compiler version
+        run: node -e "console.log(require('hardhat').config.solidity.version)"
