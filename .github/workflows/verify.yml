@@ -38,7 +38,7 @@ jobs:
           BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
         run: |
           if [ "${{ inputs.network }}" = "bsc" ]; then
-            npx hardhat verify --network bsc ${{ inputs.address }}
+            npx hardhat verify --network bsc 0x0353ad4cad5548de4230e36d86ed5536a0baca16
           else
-            npx hardhat verify --network bscTestnet ${{ inputs.address }}
+            npx hardhat verify --network bscTestnet 0x0353ad4cad5548de4230e36d86ed5536a0baca16
           fi
