@@ -1,5 +1,13 @@
 # NickgenomToken (NGM) — BEP-20 on BNB Smart Chain
 
+[![Solidity CI](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/solidity.yml/badge.svg)](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/solidity.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
+[![Build with Remix](https://img.shields.io/badge/Build-Remix-blue?logo=ethereum)](https://remix.ethereum.org)
+[![BNB Chain](https://img.shields.io/badge/Chain-BNB_SmartChain-yellow?logo=binance)](https://www.bnbchain.org)
+[![Telegram](https://img.shields.io/badge/Telegram-Join%20Group-26A5E4?logo=telegram&logoColor=white)](https://t.me/NGM_token)
+
+# NickgenomToken (NGM) — BEP-20 on BNB Smart Chain
+
 **NickgenomToken (NGM)** adalah aset kripto berbasis **BNB Smart Chain (BEP-20)** yang dirancang untuk menjadi *AI-native token* generasi baru: cepat, aman, transparan, dan ramah ekosistem Web3.
 
 ## 🔑 Fitur Utama
