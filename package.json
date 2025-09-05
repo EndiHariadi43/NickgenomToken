@@ -1,0 +1,12 @@
+{
+  "name": "nickgenomtoken",
+  "private": true,
+  "devDependencies": {
+    "hardhat": "^2.22.5",
+    "@nomicfoundation/hardhat-verify": "^2.0.8"
+  },
+  "scripts": {
+    "verify:bsc": "hardhat verify --network bsc",
+    "verify:testnet": "hardhat verify --network bscTestnet"
+  }
+}
