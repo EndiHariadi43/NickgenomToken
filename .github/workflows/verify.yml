@@ -9,17 +9,13 @@ on:
         default: "bsc"
         type: choice
         options: [bsc, bscTestnet]
-      address:
-        description: "Contract address"
-        required: true
-        default: "0x0353ad4cad5548de4230e36d86ed5536a0baca16"
+
+env:
+  CONTRACT_ADDRESS: "0x0353ad4cad5548de4230e36d86ed5536a0baca16"
 
 jobs:
   verify:
     runs-on: ubuntu-latest
-    env:
-      CONTRACT_ADDRESS: ${{ inputs.address }}
-      NETWORK: ${{ inputs.network }}
     steps:
       - uses: actions/checkout@v4
 
@@ -28,64 +24,26 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install base deps
-        run: npm ci || npm i
+      - name: Install dependencies (use lockfile if available)
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
-      - name: Try OZ versions until match & verify
+      - name: Show OZ version (debug)
+        run: node -p "require('@openzeppelin/contracts/package.json').version"
+
+      - name: Clean & Compile (force)
+        run: |
+          npx hardhat clean
+          npx hardhat compile --force
+
+      - name: Verify on BscScan
         env:
           BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
         run: |
-          set -e
-
-          # daftar versi OZ yang akan dicoba
-          VERSIONS=("4.9.6" "5.4.0" "5.3.0" "5.2.0" "5.1.0" "5.0.2")
-          MATCHED=""
-          FQN="contracts/NickgenomPermit.sol:NickgenomPermit"
-
-          for OZV in "${VERSIONS[@]}"; do
-            echo ">>> Trying OpenZeppelin ${OZV}"
-            npm i -D @openzeppelin/contracts@${OZV}
-
-            # compile ulang (pakai setelan yang sudah benar di hardhat.config.js)
-            npx hardhat clean
-            npx hardhat compile --force
-
-            # ambil deployedBytecode lokal (tanpa 0x)
-            LOC=$(node -e "process.stdout.write(require('./artifacts/contracts/NickgenomPermit.sol/NickgenomPermit.json').deployedBytecode.replace(/^0x/,''))")
-
-            # ambil runtime bytecode on-chain lewat BscScan (eth_getCode)
-            if [ "$NETWORK" = "bsc" ]; then
-              ONC=$(curl -s "https://api.bscscan.com/api?module=proxy&action=eth_getCode&address=${CONTRACT_ADDRESS}&tag=latest&apikey=${BSCSCAN_API_KEY}" | jq -r '.result' | sed 's/^0x//')
-            else
-              ONC=$(curl -s "https://api-testnet.bscscan.com/api?module=proxy&action=eth_getCode&address=${CONTRACT_ADDRESS}&tag=latest&apikey=${BSCSCAN_API_KEY}" | jq -r '.result' | sed 's/^0x//')
-            fi
-
-            # hash-kan untuk pembanding cepat
-            LHASH=$(node -e "const c=require('crypto');process.stdout.write(c.createHash('sha256').update('${LOC}','hex').digest('hex'))")
-            OHASH=$(node -e "const c=require('crypto');process.stdout.write(c.createHash('sha256').update('${ONC}','hex').digest('hex'))")
-
-            echo "Local bytecode sha256 : $LHASH"
-            echo "Onchain bytecode sha256: $OHASH"
-
-            if [ "$LHASH" = "$OHASH" ]; then
-              echo ">>> MATCH found with OZ ${OZV}. Running verify…"
-              MATCHED="$OZV"
-              if [ "$NETWORK" = "bsc" ]; then
-                npx hardhat verify --network bsc --contract "$FQN" "$CONTRACT_ADDRESS"
-              else
-                npx hardhat verify --network bscTestnet --contract "$FQN" "$CONTRACT_ADDRESS"
-              fi
-              break
-            else
-              echo "No match with OZ ${OZV}, trying next…"
-            fi
-          done
-
-          if [ -z "$MATCHED" ]; then
-            echo "::error::All OZ versions tried did not match the on-chain bytecode."
-            exit 1
+          if [ "${{ inputs.network }}" = "bsc" ]; then
+            npx hardhat verify --network bsc "0x0353ad4cad5548de4230e36d86ed5536a0baca16" \
+              --contract "contracts/NickgenomPermit.sol:NickgenomPermit"
+          else
+            npx hardhat verify --network bscTestnet "0x0353ad4cad5548de4230e36d86ed5536a0baca16" \
+              --contract "contracts/NickgenomPermit.sol:NickgenomPermit"
           fi
-
-      - name: Done
-        if: success()
-        run: echo "Contract verified successfully."
