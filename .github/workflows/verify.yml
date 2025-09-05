@@ -28,8 +28,8 @@ jobs:
         run: |
           if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
-      - name: Pin OpenZeppelin 5.0.2 (force)
-        run: npm i -D @openzeppelin/contracts@5.0.2
+      - name: Pin OpenZeppelin 5.4.0 (force)
+        run: npm i -D @openzeppelin/contracts@5.4.0
 
       - name: Show OZ version (debug)
         run: |
