@@ -27,21 +27,25 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install dependencies
-        run: npm install
-
-      # Tambahkan blok ini agar runner PASTI memakai OZ 4.9.6
-      - name: Pin OpenZeppelin 4.9.6 (match Remix build)
+      - name: Show OZ version (debug)
         run: |
-          npm uninstall @openzeppelin/contracts || true
-          npm install --save-dev @openzeppelin/contracts@4.9.6
-          echo "OZ version ->" && node -p "require('@openzeppelin/contracts/package.json').version"
+          node -p "require('@openzeppelin/contracts/package.json').version"
           npm ls @openzeppelin/contracts || true
 
       - name: Clean & Compile (force)
         run: |
           npx hardhat clean
           npx hardhat compile --force
+
+      - name: Verify on BscScan
+        env:
+          BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
+        run: |
+          if [ "${{ inputs.network }}" = "bsc" ]; then
+            npx hardhat verify --network bsc "${CONTRACT_ADDRESS}"
+          else
+            npx hardhat verify --network bscTestnet "${CONTRACT_ADDRESS}"
+          fi
 
       - name: Clean & Compile (force)
         run: |
