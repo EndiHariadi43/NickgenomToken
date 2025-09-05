@@ -32,9 +32,6 @@ NickgenomToken hadir sebagai **jembatan antara AI & blockchain**, mendorong adop
 ---
 
 
-
----
-
 ## 🌐 Branding & Narrative
 
 **NGM — The Meme Token with AI Utility**  
