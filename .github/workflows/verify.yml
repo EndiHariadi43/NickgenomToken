@@ -23,10 +23,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18          # ⚠️ jangan pakai cache: 'npm' kalau tidak ada lock file
+          node-version: 20
 
       - name: Install dependencies
-        run: npm install            # ganti dari `npm ci`
+        run: npm install
+
+      - name: Clean & Compile (force) with matching settings
+        run: |
+          npx hardhat clean
+          npx hardhat compile --force
 
       - name: Verify on BscScan
         env:
