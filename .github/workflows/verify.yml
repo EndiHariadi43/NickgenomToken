@@ -25,11 +25,15 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Pin OpenZeppelin 5.0.2 (force)
+        run: npm i -D @openzeppelin/contracts@5.0.2
 
       - name: Show OZ version (debug)
         run: |
-          node -p "require('@openzeppelin/contracts/package.json').version"
+          node -e "console.log('OZ=', require('@openzeppelin/contracts/package.json').version)"
           npm ls @openzeppelin/contracts || true
 
       - name: Clean & Compile (force)
