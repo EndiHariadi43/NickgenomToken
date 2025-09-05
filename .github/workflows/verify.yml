@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
       - name: Install dependencies (use lockfile if available)
         run: |
@@ -41,9 +41,9 @@ jobs:
           BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
         run: |
           if [ "${{ inputs.network }}" = "bsc" ]; then
-            npx hardhat verify --network bsc "0x0353ad4cad5548de4230e36d86ed5536a0baca16" \
+            npx hardhat verify --network bsc $CONTRACT_ADDRESS \
               --contract "contracts/NickgenomPermit.sol:NickgenomPermit"
           else
-            npx hardhat verify --network bscTestnet "0x0353ad4cad5548de4230e36d86ed5536a0baca16" \
+            npx hardhat verify --network bscTestnet $CONTRACT_ADDRESS \
               --contract "contracts/NickgenomPermit.sol:NickgenomPermit"
           fi
