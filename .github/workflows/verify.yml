@@ -38,7 +38,7 @@ jobs:
           set -e
 
           # daftar versi OZ yang akan dicoba
-          VERSIONS=("5.4.0" "5.3.0" "5.2.0" "5.1.0" "5.0.2")
+          VERSIONS=("4.9.6" "5.4.0" "5.3.0" "5.2.0" "5.1.0" "5.0.2")
           MATCHED=""
           FQN="contracts/NickgenomPermit.sol:NickgenomPermit"
 
