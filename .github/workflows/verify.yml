@@ -9,10 +9,9 @@ on:
         default: "bsc"
         type: choice
         options: [bsc, bscTestnet]
-      address:
-        description: "Alamat kontrak yang sudah dideploy"
-        required: true
-        type: string
+        
+env:
+  CONTRACT_ADDRESS: "0x0353ad4cad5548de4230e36d86ed5536a0baca16"
 
 jobs:
   verify:
@@ -28,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Clean & Compile (force) with matching settings
+      - name: Clean & Compile (force)
         run: |
           npx hardhat clean
           npx hardhat compile --force
@@ -38,7 +37,7 @@ jobs:
           BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
         run: |
           if [ "${{ inputs.network }}" = "bsc" ]; then
-            npx hardhat verify --network bsc 0x0353ad4cad5548de4230e36d86ed5536a0baca16
+            npx hardhat verify --network bsc "${CONTRACT_ADDRESS}"
           else
-            npx hardhat verify --network bscTestnet 0x0353ad4cad5548de4230e36d86ed5536a0baca16
+            npx hardhat verify --network bscTestnet "${CONTRACT_ADDRESS}"
           fi
