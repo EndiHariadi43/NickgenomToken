@@ -1,3 +1,6 @@
+require("@nomicfoundation/hardhat-verify");
+try { require('dotenv').config(); } catch (e) {}
+
 try { require('dotenv').config(); } catch (e) {}
 const { BSCSCAN_API_KEY, PRIVATE_KEY, BSC_RPC_URL, BSC_TESTNET_RPC_URL } = process.env;
 
