@@ -27,10 +27,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Show OZ version (debug)
-        run: |
-          node -p "require('@openzeppelin/contracts/package.json').version"
-          npm ls @openzeppelin/contracts || true
+      - name: Show OZ version
+        run: node -p "require('@openzeppelin/contracts/package.json').version"
 
       - name: Clean & Compile (force)
         run: |
