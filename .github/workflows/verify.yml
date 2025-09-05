@@ -19,10 +19,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Gunakan Node LTS yang stabil untuk Hardhat (hindari warning 18.20.8)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 18.19.0
 
       - name: Install dependencies (use lockfile if available)
         run: |
@@ -41,9 +42,9 @@ jobs:
           BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
         run: |
           if [ "${{ inputs.network }}" = "bsc" ]; then
-            npx hardhat verify --network bsc $CONTRACT_ADDRESS \
+            npx hardhat verify --network bsc "$CONTRACT_ADDRESS" \
               --contract "contracts/NickgenomPermit.sol:NickgenomPermit"
           else
-            npx hardhat verify --network bscTestnet $CONTRACT_ADDRESS \
+            npx hardhat verify --network bscTestnet "$CONTRACT_ADDRESS" \
               --contract "contracts/NickgenomPermit.sol:NickgenomPermit"
           fi
