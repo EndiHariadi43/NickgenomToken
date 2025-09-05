@@ -5,7 +5,7 @@ module.exports = {
     version: "0.8.20",
     settings: {
       optimizer: { enabled: true, runs: 200 },
-      evmVersion: "london",               // <-- MATCH Remix
+      evmVersion: "london",
     },
   },
   networks: {
@@ -13,13 +13,10 @@ module.exports = {
     bscTestnet: { url: "https://data-seed-prebsc-1-s1.bnbchain.org:8545" },
   },
   etherscan: {
-    // v2: satu apiKey global
-    apiKey: process.env.BSCSCAN_API_KEY, // gunakan 1 key (v2 notice)
+    apiKey: process.env.BSCSCAN_API_KEY,
     customChains: [
-      { network: "bsc", chainId: 56,
-        urls: { apiURL: "https://api.bscscan.com/api", browserURL: "https://bscscan.com" } },
-      { network: "bscTestnet", chainId: 97,
-        urls: { apiURL: "https://api-testnet.bscscan.com/api", browserURL: "https://testnet.bscscan.com" } }
+      { network: "bsc", chainId: 56, urls: { apiURL: "https://api.bscscan.com/api", browserURL: "https://bscscan.com" } },
+      { network: "bscTestnet", chainId: 97, urls: { apiURL: "https://api-testnet.bscscan.com/api", browserURL: "https://testnet.bscscan.com" } }
     ],
   },
 };
