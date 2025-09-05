@@ -34,6 +34,16 @@ NickgenomToken hadir sebagai **jembatan antara AI & blockchain**, mendorong adop
 - **Supply**: 1,000,000,000,000 NGM (fixed)  
 - **Chain**: BNB Smart Chain (BEP-20)  
 
+## 🧭 Getting Started
+- Buka MetaMask / TrustWallet  
+- Pilih **BNB Smart Chain (BEP-20)**  
+- Klik **Import Token**  
+- Masukkan alamat kontrak hasil deploy (setelah kontrak Nickgenom dipublish)  
+- Token NGM akan muncul di wallet Anda
+
+## 👥 Kontributor
+- **Endi Hariadi** — Founder & Maintainer
+
 ---
 
 > 🔒 Kontrak 100% open-source, tanpa fungsi tersembunyi. Dirancang untuk komunitas & integrasi AI masa depan.
