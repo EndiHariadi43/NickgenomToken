@@ -1,36 +1,25 @@
-require("@nomicfoundation/hardhat-verify");
-require("dotenv").config();
-
-const maybeAccounts = process.env.PRIVATE_KEY
-  ? [process.env.PRIVATE_KEY]
-  : undefined; // <-- kalau tidak ada PRIVATE_KEY, jangan set accounts
+try { require('dotenv').config(); } catch (e) {}
+const { BSCSCAN_API_KEY, PRIVATE_KEY, BSC_RPC_URL, BSC_TESTNET_RPC_URL } = process.env;
 
 module.exports = {
-  solidity: {
-    version: "0.8.20",
-    settings: {
-      optimizer: { enabled: false, runs: 200 },
-      evmVersion: "london",
-      viaIR: false,
-    },
-  },
+  solidity: { version: "0.8.20", settings: { optimizer: { enabled: false, runs: 200 }, evmVersion: "london" } },
   networks: {
     bsc: {
-      url: "https://bsc-dataseed.binance.org",
+      url: BSC_RPC_URL || "https://bsc-dataseed.binance.org",
       chainId: 56,
-      accounts: maybeAccounts, // <-- aman jika undefined
+      accounts: PRIVATE_KEY ? [PRIVATE_KEY] : []
     },
     bscTestnet: {
-      url: "https://data-seed-prebsc-1-s1.binance.org:8545",
+      url: BSC_TESTNET_RPC_URL || "https://data-seed-prebsc-1-s1.binance.org:8545",
       chainId: 97,
-      accounts: maybeAccounts,
-    },
+      accounts: PRIVATE_KEY ? [PRIVATE_KEY] : []
+    }
   },
   etherscan: {
     apiKey: {
-      bsc: process.env.BSCSCAN_API_KEY,
-      bscTestnet: process.env.BSCSCAN_API_KEY,
-    },
+      bsc: BSCSCAN_API_KEY,
+      bscTestnet: BSCSCAN_API_KEY
+    }
   },
-  sourcify: { enabled: false }, // hanya untuk hilangkan pesan info
+  sourcify: { enabled: false }
 };
