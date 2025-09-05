@@ -31,6 +31,33 @@ NickgenomToken hadir sebagai **jembatan antara AI & blockchain**, mendorong adop
 
 ---
 
+
+
+---
+
+## 🌐 Branding & Narrative
+
+**NGM — The Meme Token with AI Utility**  
+
+✨ *“Fun like a Meme, Useful like AI.”*  
+
+NGM bukan sekadar token biasa. Kami menggabungkan **kekuatan komunitas meme** dengan **utilitas nyata untuk ekosistem AI & Web3** di BNB Smart Chain.  
+
+### Kenapa NGM Berbeda?
+- 🎭 **Meme-Friendly** → mudah dipahami, mudah dibagikan, cocok untuk viral marketing.  
+- 🤖 **AI Utility** → *AI-native token* yang siap mendukung integrasi dApps berbasis kecerdasan buatan.  
+- 🔒 **Transparan & Aman** → kontrak diverifikasi, tanpa fungsi tersembunyi, tanpa pajak, tanpa blacklist.  
+- ♻️ **Burnable Supply** → mekanisme pembakaran menciptakan kelangkaan jangka panjang.  
+- ⚡ **Gasless Approvals (EIP-2612)** → siap mendukung ekosistem DeFi modern.  
+
+### 🎯 Visi NGM
+Menjadi **jembatan antara AI, Blockchain, dan Komunitas Meme**:  
+- Mendukung AI Assistant, AI Research Funding, dan Data Exchange berbasis blockchain.  
+- Memberdayakan komunitas untuk membangun ekosistem Web3 yang inklusif.  
+- Membuktikan bahwa *Meme Coin* bisa punya **utility nyata**.  
+
+---
+
 ## 🛠️ Deploy & Verifikasi
 Kontrak sudah **dideploy di Mainnet** dan **diverifikasi otomatis di BscScan**.  
 
