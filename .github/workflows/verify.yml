@@ -27,6 +27,22 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install dependencies
+        run: npm install
+
+      # Tambahkan blok ini agar runner PASTI memakai OZ 4.9.6
+      - name: Pin OpenZeppelin 4.9.6 (match Remix build)
+        run: |
+          npm uninstall @openzeppelin/contracts || true
+          npm install --save-dev @openzeppelin/contracts@4.9.6
+          echo "OZ version ->" && node -p "require('@openzeppelin/contracts/package.json').version"
+          npm ls @openzeppelin/contracts || true
+
+      - name: Clean & Compile (force)
+        run: |
+          npx hardhat clean
+          npx hardhat compile --force
+
       - name: Clean & Compile (force)
         run: |
           npx hardhat clean
