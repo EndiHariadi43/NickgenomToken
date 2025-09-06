@@ -13,30 +13,17 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    container:
+      image: node:22.11.0
     steps:
       - uses: actions/checkout@v4
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.11.0
-          
-      - name: Install specific Hardhat version
+      - name: Clean install
         run: |
+          npm cache clean --force
+          rm -rf node_modules package-lock.json
           npm install hardhat@2.22.5
           npm install
-          
-      - name: Show versions
-        run: |
-          echo "Node version: $(node --version)"
-          echo "Hardhat version: $(npx hardhat --version)"
-          echo "Network: ${{ inputs.network }}"
-          echo "Contract Address: ${{ secrets.CONTRACT_ADDRESS_BSC }}"
-          
-      - name: Clean & Compile
-        run: |
-          npx hardhat clean
-          npx hardhat compile
           
       - name: Verify on BscScan
         env:
