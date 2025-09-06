@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.22; // Update dari 0.8.20 ke 0.8.22
+pragma solidity ^0.8.22;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../interfaces/IRescue.sol";
+import "./NickgenomErrors.sol"; // TAMBAHKAN IMPORT INI
 
 /**
  * @title Nickgenom (NGM) — Fixed Supply BEP-20 with EIP-2612 Permit
