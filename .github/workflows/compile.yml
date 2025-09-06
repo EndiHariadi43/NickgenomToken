@@ -1,0 +1,41 @@
+name: Solidity CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Compile with Hardhat
+        run: npx hardhat compile
+      
+      - name: Show Solidity compiler version
+        run: node -e "console.log(require('hardhat').config.solidity.version)"
+      
+      - name: Run Security Analysis with Slither
+        run: |
+          pip install slither-analyzer
+          slither . --sarif slither-results.sarif
+        continue-on-error: true
+      
+      - name: Upload Slither Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: slither-results
+          path: slither-results.sarif

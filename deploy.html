@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NGM Token Deployment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px 0;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #f0ad4e;
+      border: none;
+      border-radius: 5px;
+    }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    #status {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      font-family: monospace;
+    }
+    .error {
+      color: red;
+      background-color: #ffeeee;
+    }
+    .success {
+      color: green;
+      background-color: #eeffee;
+    }
+    .info {
+      color: blue;
+      background-color: #eeeeff;
+    }
+    .debug {
+      color: #666;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>NGM Token Deployment</h1>
+  
+  <div class="info">
+    <h3>Instructions:</h3>
+    <ol>
+      <li>Install Binance Wallet from <a href="https://www.binance.com/en/web3/wallet" target="_blank">here</a></li>
+      <li>Make sure you're on BSC Testnet</li>
+      <li>Click "Connect Binance Wallet"</li>
+      <li>Approve the connection request</li>
+      <li>Click "Deploy Contract"</li>
+    </ol>
+  </div>
+  
+  <button id="connectBtn">Connect Binance Wallet</button>
+  <button id="deployBtn" disabled>Deploy Contract</button>
+  <button id="debugBtn">Debug Info</button>
+  
+  <div id="status"></div>
+
+  <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+  <script>
+    let provider;
+    let signer;
+    const statusDiv = document.getElementById('status');
+    const connectBtn = document.getElementById('connectBtn');
+    const deployBtn = document.getElementById('deployBtn');
+    const debugBtn = document.getElementById('debugBtn');
+
+    // Function to update status
+    function updateStatus(message, type = '') {
+      statusDiv.innerHTML = `<div class="${type}">${message}</div>`;
+      console.log(`[${type.toUpperCase()}] ${message}`);
+    }
+
+    // Debug function
+    debugBtn.addEventListener('click', async () => {
+      let debugInfo = `
+        <h3>Debug Information</h3>
+        <p><strong>ethereum object:</strong> ${typeof window.ethereum}</p>
+        <p><strong>ethereum.isBinance:</strong> ${window.ethereum ? window.ethereum.isBinance : 'N/A'}</p>
+        <p><strong>ethereum.isMetaMask:</strong> ${window.ethereum ? window.ethereum.isMetaMask : 'N/A'}</p>
+        <p><strong>window.BinanceChain:</strong> ${typeof window.BinanceChain}</p>
+        <p><strong>Provider detected:</strong> ${provider ? 'Yes' : 'No'}</p>
+        <p><strong>Signer detected:</strong> ${signer ? 'Yes' : 'No'}</p>
+        <p><strong>Current chainId:</strong> ${window.ethereum ? await window.ethereum.request({method: 'eth_chainId'}) : 'N/A'}</p>
+      `;
+      updateStatus(debugInfo, 'debug');
+    });
+
+    // Check if Binance Wallet is installed
+    function checkBinanceWallet() {
+      if (typeof window.ethereum !== 'undefined') {
+        if (window.ethereum.isBinance) {
+          return 'Binance Wallet';
+        } else if (window.ethereum.isMetaMask) {
+          return 'MetaMask (may work with Binance Chain)';
+        } else {
+          return 'Unknown Provider';
+        }
+      } else {
+        return 'No Web3 Provider Found';
+      }
+    }
+
+    connectBtn.addEventListener('click', async () => {
+      try {
+        const walletType = checkBinanceWallet();
+        updateStatus(`Detected: ${walletType}`, 'info');
+        
+        if (typeof window.ethereum === 'undefined') {
+          throw new Error("No Web3 provider found. Please install Binance Wallet.");
+        }
+
+        // Request account access
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        
+        if (accounts.length === 0) {
+          throw new Error("No accounts found. Please unlock your wallet.");
+        }
+        
+        // Create provider and signer
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        signer = provider.getSigner();
+        
+        const address = await signer.getAddress();
+        const network = await provider.getNetwork();
+        
+        updateStatus(`
+          Connected successfully!<br>
+          Wallet: ${walletType}<br>
+          Address: ${address}<br>
+          Network: ${network.name} (Chain ID: ${network.chainId})<br>
+          ${network.chainId !== 97 ? '<span class="error">WARNING: Not on BSC Testnet (Chain ID: 97)</span>' : '<span class="success">✅ On BSC Testnet</span>'}
+        `, 'success');
+        
+        deployBtn.disabled = false;
+        
+      } catch (error) {
+        updateStatus(`Connection Error: ${error.message}`, 'error');
+        console.error('Connection error:', error);
+      }
+    });
+
+    deployBtn.addEventListener('click', async () => {
+      try {
+        if (!signer) {
+          throw new Error("Please connect wallet first");
+        }
+        
+        updateStatus('Preparing deployment...', 'info');
+        
+        // Check if we're on the right network
+        const network = await provider.getNetwork();
+        if (network.chainId !== 97) {
+          throw new Error("Please switch to BSC Testnet (Chain ID: 97)");
+        }
+        
+        updateStatus('Loading contract...', 'info');
+        
+        // Load contract ABI and bytecode
+        let contractJSON;
+        try {
+          const response = await fetch('artifacts/contracts/token/NickgenomPermit.sol/NickgenomPermit.json');
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          contractJSON = await response.json();
+        } catch (error) {
+          throw new Error(`Failed to load contract: ${error.message}. Make sure you ran "npm run compile" first.`);
+        }
+        
+        if (!contractJSON.bytecode) {
+          throw new Error("Contract bytecode not found. Check compilation.");
+        }
+        
+        updateStatus('Deploying contract...', 'info');
+        
+        const factory = new ethers.ContractFactory(
+          contractJSON.abi,
+          contractJSON.bytecode,
+          signer
+        );
+        
+        const contract = await factory.deploy();
+        await contract.deployed();
+        
+        const address = contract.address;
+        updateStatus(`
+          <span class="success">
+            Contract deployed successfully!<br>
+            Address: <strong>${address}</strong><br>
+            Transaction: <a href="https://testnet.bscscan.com/tx/${contract.deployTransaction.hash}" target="_blank">View on BscScan</a><br>
+            <br>
+            <strong>IMPORTANT:</strong> Save this address to GitHub Secrets:<br>
+            <code>${address}</code>
+          </span>
+        `, 'success');
+        
+      } catch (error) {
+        updateStatus(`Deployment Error: ${error.message}`, 'error');
+        console.error('Deployment error:', error);
+      }
+    });
+
+    // Auto-check on page load
+    window.addEventListener('load', () => {
+      const walletType = checkBinanceWallet();
+      updateStatus(`Page loaded. Detected: ${walletType}`, 'info');
+    });
+
+    // Listen for account changes
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', (accounts) => {
+        if (accounts.length === 0) {
+          updateStatus('Wallet disconnected', 'error');
+          deployBtn.disabled = true;
+        } else {
+          updateStatus(`Account changed to: ${accounts[0]}`, 'info');
+        }
+      });
+
+      window.ethereum.on('chainChanged', (chainId) => {
+        updateStatus(`Network changed to chain ID: ${chainId}`, 'info');
+        if (parseInt(chainId, 16) !== 97) {
+          updateStatus('Please switch to BSC Testnet (Chain ID: 97)', 'error');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
