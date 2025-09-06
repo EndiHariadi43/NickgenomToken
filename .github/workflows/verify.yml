@@ -32,7 +32,15 @@ jobs:
         run: |
           npx hardhat clean
           npx hardhat compile
-          
+      
+      # .github/workflows/verify.yml
+      - name: Debug Info
+        run: |
+          echo "Node version: $(node --version)"
+          echo "Hardhat version: $(npx hardhat --version)"
+          echo "Network: ${{ inputs.network }}"
+          echo "Contract Address: ${{ secrets.CONTRACT_ADDRESS_BSC }}"
+        
       - name: Verify on BscScan
         env:
           BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
