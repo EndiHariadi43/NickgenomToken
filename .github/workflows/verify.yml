@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18.18.0 # Gunakan versi yang didukung Hardhat
+          node-version: 22.11.0 # UPDATED TO SUPPORTED VERSION
           
       - name: Install dependencies
         run: |
@@ -40,9 +40,11 @@ jobs:
           if [ "${{ inputs.network }}" = "bsc" ]; then
             echo "Verifying on BSC Mainnet..."
             npx hardhat verify --network bsc "${{ secrets.CONTRACT_ADDRESS_BSC }}" \
-              --contract "contracts/token/Nickgenommit.sol:NickgenomPermit"
+              --contract "contracts/token/NickgenomPermit.sol:NickgenomPermit" \
+              --compiler-version 0.8.20 # SPECIFY ORIGINAL COMPILER VERSION
           else
             echo "Verifying on BSC Testnet..."
             npx hardhat verify --network bscTestnet "${{ secrets.CONTRACT_ADDRESS_BSCTESTNET }}" \
-              --contract "contracts/token/NickgenomPermit.sol:NickgenomPermit"
+              --contract "contracts/token/NickgenPermit.sol:NickgenomPermit" \
+              --compiler-version 0.8.20 # SPECIFY ORIGINAL COMPILER VERSION
           fi
