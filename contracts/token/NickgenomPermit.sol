@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.22; // Update dari 0.8.20 ke 0.8.22
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "../interfaces/IRescue.sol"; // Import interface
+import "../interfaces/IRescue.sol";
 
 /**
  * @title Nickgenom (NGM) — Fixed Supply BEP-20 with EIP-2612 Permit
@@ -32,15 +32,15 @@ contract NickgenomPermit is ERC20, ERC20Permit, ERC20Burnable, Ownable, IRescue 
     
     // Fungsi rescue dengan events dan error handling
     function rescueERC20(address token, uint256 amount) external override onlyOwner {
-        if (token == address(0)) revert("Zero address");
-        if (amount == 0) revert("Invalid amount");
+        if (token == address(0)) revert ZeroAddress(); // Gunakan custom error
+        if (amount == 0) revert InvalidAmount(); // Gunakan custom error
         
         IERC20(token).transfer(owner(), amount);
         emit ERC20Rescued(token, amount);
     }
     
     function rescueBNB(uint256 amount) external override onlyOwner {
-        if (amount == 0) revert("Invalid amount");
+        if (amount == 0) revert InvalidAmount(); // Gunakan custom error
         if (address(this).balance < amount) revert("Insufficient balance");
         
         payable(owner()).transfer(amount);

@@ -1,52 +1,36 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.21; // Update ke versi lebih baru
+// hardhat.config.js - JavaScript Configuration
+require('dotenv/config');
+require('@nomicfoundation/hardhat-verify');
+require('@nomicfoundation/hardhat-toolbox');
+const { BSCSCAN_API_KEY, BSC_RPC_URL, BSC_TESTNET_RPC_URL } = process.env;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "../interfaces/IRescue.sol";
-
-/**
- * @title Nickgenom (NGM) — Fixed Supply BEP-20 with EIP-2612 Permit
- * @notice No tax, no blacklist, no transfer limits.
- *         100% initial supply -> owner's address. Burn & burnFrom enabled.
- */
-contract NickgenomPermit is ERC20, ERC20Permit, ERC20Burnable, Ownable, IRescue {
-    string private constant _NAME   = "Nickgenom";
-    string private constant _SYMBOL = "NGM";
-    uint256 private constant _SUPPLY = 1_000_000_000_000 * 10**18; // 1 triliun dengan 18 desimal
-    
-    // Events
-    event ERC20Rescued(address token, uint256 amount);
-    event BNBRescued(uint256 amount);
-    
-    constructor()
-        ERC20(_NAME, _SYMBOL)
-        ERC20Permit(_NAME)
-        Ownable(msg.sender)
-    {
-        _mint(msg.sender, _SUPPLY);
-    }
-    
-    // Rescue functions dengan error handling yang lebih baik
-    function rescueERC20(address token, uint256 amount) external override onlyOwner {
-        require(token != address(0), "Zero address");
-        require(amount > 0, "Invalid amount");
-        
-        IERC20(token).transfer(owner(), amount);
-        emit ERC20Rescued(token, amount);
-    }
-    
-    function rescueBNB(uint256 amount) external override onlyOwner {
-        require(amount > 0, "Invalid amount");
-        require(address(this).balance >= amount, "Insufficient balance");
-        
-        payable(owner()).transfer(amount);
-        emit BNBRescued(amount);
-    }
-    
-    // Fallback to receive BNB
-    receive() external payable {}
-}
+module.exports = {
+  solidity: {
+    version: '0.8.22', // Update ke 0.8.22
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+      evmVersion: 'paris', // EVM version untuk 0.8.22
+    },
+  },
+  networks: {
+    bsc: {
+      url: BSC_RPC_URL || 'https://bsc-dataseed.binance.org',
+      chainId: 56,
+      gasPrice: 5 * 10**9, // 5 Gwei
+    },
+    bscTestnet: {
+      url: BSC_TESTNET_RPC_URL || 'https://data-seed-prebsc-1-s1.binance.org:8545',
+      chainId: 97,
+    },
+  },
+  etherscan: { 
+    apiKey: BSCSCAN_API_KEY 
+  },
+  sourcify: { 
+    enabled: true 
+  },
+  plugins: ['solidity-coverage'],
+};
