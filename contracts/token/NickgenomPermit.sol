@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "../../interfaces/IRescue.sol"; // Import interface
+import "../interfaces/IRescue.sol"; // Import interface
 
 /**
  * @title Nickgenom (NGM) — Fixed Supply BEP-20 with EIP-2612 Permit
