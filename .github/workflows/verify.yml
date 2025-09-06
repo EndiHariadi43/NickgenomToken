@@ -19,19 +19,19 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.11.0 # UPDATED TO SUPPORTED VERSION
+          node-version: 22.11.0 # VERSI YANG DIDUKUNG
           
       - name: Install dependencies
         run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+          npm install
           
-      - name: Show OZ version (debug)
-        run: node -p "require('@openzeppelin/contracts/package.json').version"
+      - name: Show Hardhat version
+        run: npx hardhat --version
         
-      - name: Clean & Compile (force)
+      - name: Clean & Compile
         run: |
           npx hardhat clean
-          npx hardhat compile --force
+          npx hardhat compile
           
       - name: Verify on BscScan
         env:
@@ -41,10 +41,12 @@ jobs:
             echo "Verifying on BSC Mainnet..."
             npx hardhat verify --network bsc "${{ secrets.CONTRACT_ADDRESS_BSC }}" \
               --contract "contracts/token/NickgenomPermit.sol:NickgenomPermit" \
-              --compiler-version 0.8.20 # SPECIFY ORIGINAL COMPILER VERSION
+              --compiler-version 0.8.20 \
+              --force
           else
             echo "Verifying on BSC Testnet..."
             npx hardhat verify --network bscTestnet "${{ secrets.CONTRACT_ADDRESS_BSCTESTNET }}" \
-              --contract "contracts/token/NickgenPermit.sol:NickgenomPermit" \
-              --compiler-version 0.8.20 # SPECIFY ORIGINAL COMPILER VERSION
+              --contract "contracts/token/NickgenomPermit.sol:NickgenomPermit" \
+              --compiler-version 0.8.20 \
+              --force
           fi
