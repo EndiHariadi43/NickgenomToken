@@ -1,5 +1,4 @@
 name: Verify on BscScan
-
 on:
   workflow_dispatch:
     inputs:
@@ -10,41 +9,43 @@ on:
         type: choice
         options: [bsc, bscTestnet]
 
-env:
-  CONTRACT_ADDRESS: "0x0353ad4cad5548de4230e36d86ed5536a0baca16"
-
 jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      # Gunakan Node LTS yang stabil untuk Hardhat (hindari warning 18.20.8)
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18.19.0
-
-      - name: Install dependencies (use lockfile if available)
+          
+      - name: Install dependencies
         run: |
           if [ -f package-lock.json ]; then npm ci; else npm install; fi
-
+          
       - name: Show OZ version (debug)
         run: node -p "require('@openzeppelin/contracts/package.json').version"
-
+        
       - name: Clean & Compile (force)
         run: |
           npx hardhat clean
           npx hardhat compile --force
-
+          
       - name: Verify on BscScan
         env:
           BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
         run: |
+          # Get contract address based on network
           if [ "${{ inputs.network }}" = "bsc" ]; then
-            npx hardhat verify --network bsc "$CONTRACT_ADDRESS" \
-              --contract "contracts/NickgenomPermit.sol:NickgenomPermit"
+            CONTRACT_ADDRESS="${{ secrets.CONTRACT_ADDRESS_BSC }}"
+            NETWORK="bsc"
           else
-            npx hardhat verify --network bscTestnet "$CONTRACT_ADDRESS" \
-              --contract "contracts/NickgenomPermit.sol:NickgenomPermit"
+            CONTRACT_ADDRESS="${{ secrets.CONTRACT_ADDRESS_BSCTESTNET }}"
+            NETWORK="bscTestnet"
           fi
+          
+          echo "Verifying contract $CONTRACT_ADDRESS on $NETWORK"
+          
+          npx hardhat verify --network $NETWORK "$CONTRACT_ADDRESS" \
+            --contract "contracts/token/NickgenomPermit.sol:NickgenomPermit"
