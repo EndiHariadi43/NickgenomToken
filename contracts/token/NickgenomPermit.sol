@@ -50,8 +50,8 @@ contract NickgenomPermit is ERC20, ERC20Permit, ERC20Burnable, Ownable, IRescue 
     // Fungsi untuk menerima BNB
     receive() external payable {}
     
-    // Fungsi untuk mendapatkan total supply
-    function totalSupply() public view override returns (uint256) {
+    // Fungsi totalSupply yang dioptimasi
+    function totalSupply() public pure override returns (uint256) {
         return _SUPPLY;
     }
 }
