@@ -1,4 +1,5 @@
-const hre = require("hardhat");
+// scripts/verify.js (ESM Format)
+import hre from "hardhat";
 
 async function main() {
   const contractAddress = process.env.CONTRACT_ADDRESS;

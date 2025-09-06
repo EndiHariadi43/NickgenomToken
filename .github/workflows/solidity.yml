@@ -12,20 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-          # cache npm optional; kalau belum ada package-lock.json bisa hapus baris ini
-          # cache: 'npm'
-
+          node-version: 18.18.0 # Gunakan versi yang didukung Hardhat
+          cache: 'npm'
+      
       - name: Install dependencies
-        run: npm install
-
+        run: npm ci
+      
       - name: Compile with Hardhat
         run: npx hardhat compile
-
-      # (Opsional) tampilkan versi compiler yang dipakai Hardhat
+      
       - name: Show Solidity compiler version
         run: node -e "console.log(require('hardhat').config.solidity.version)"

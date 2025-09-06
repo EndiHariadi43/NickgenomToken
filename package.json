@@ -1,18 +1,7 @@
 {
   "name": "nickgenomtoken",
   "private": true,
-  "devDependencies": {
-    "hardhat": "^2.22.5",
-    "@nomicfoundation/hardhat-verify": "^2.0.8",
-    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
-    "@openzeppelin/contracts": "^5.4.0",
-    "dotenv": "^16.4.5",
-    "chai": "^4.3.7",
-    "ethers": "^6.7.1",
-    "solidity-coverage": "^0.8.5",
-    "prettier": "^3.0.0",
-    "prettier-plugin-solidity": "^1.1.3"
-  },
+  "type": "module",
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",
@@ -24,5 +13,17 @@
     "verify:bsctest": "hardhat verify --network bscTestnet",
     "format": "prettier --write \"**/*.{js,sol}\"",
     "format:check": "prettier --check \"**/*.{js,sol}\""
+  },
+  "devDependencies": {
+    "hardhat": "^2.22.5",
+    "@nomicfoundation/hardhat-verify": "^2.0.8",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^5.0.2",
+    "dotenv": "^16.4.5",
+    "chai": "^4.3.7",
+    "ethers": "^6.7.1",
+    "solidity-coverage": "^0.8.5",
+    "prettier": "^3.0.0",
+    "prettier-plugin-solidity": "^1.1.3"
   }
 }

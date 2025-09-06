@@ -1,19 +1,16 @@
-const hre = require("hardhat");
+// scripts/deploy.js (ESM Format)
+import hre from "hardhat";
 
 async function main() {
   console.log("Deploying NickgenomPermit contract...");
   
-  // Get contract factory
   const NickgenomPermit = await hre.ethers.getContractFactory("NickgenomPermit");
-  
-  // Deploy contract
   const ngm = await NickgenomPermit.deploy();
   await ngm.waitForDeployment();
   
   const address = await ngm.getAddress();
   console.log(`NickgenomPermit deployed to: ${address}`);
   
-  // Verify contract on BscScan
   console.log("Verifying contract on BscScan...");
   try {
     await hre.run("verify:verify", {

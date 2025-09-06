@@ -6,15 +6,16 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "../interfaces/IRescue.sol";
-import "./NickgenomErrors.sol"; // ← TAMBAHKAN IMPORT INI
+import "../interfaces/IRescue.sol"; // Hapus import Rescue dan NickgenomErrors
 
 contract NickgenomPermit is ERC20, ERC20Permit, ERC20Burnable, Ownable, IRescue {
     string private constant _NAME   = "Nickgenom";
     string private constant _SYMBOL = "NGM";
     uint256 private constant _SUPPLY = 1_000_000_000_000 * 10**18;
     
-    // Tidak perlu definisi errors di sini karena sudah di import
+    // Definisikan errors langsung di sini
+    error ZeroAddress();
+    error InvalidAmount();
     
     // Events
     event ERC20Rescued(address token, uint256 amount);
@@ -29,15 +30,15 @@ contract NickgenomPermit is ERC20, ERC20Permit, ERC20Burnable, Ownable, IRescue 
     }
     
     function rescueERC20(address token, uint256 amount) external override onlyOwner {
-        if (token == address(0)) revert ZeroAddress(); // ← Menggunakan dari NickgenomErrors.sol
-        if (amount == 0) revert InvalidAmount(); // ← Menggunakan dari NickgenomErrors.sol
+        if (token == address(0)) revert ZeroAddress();
+        if (amount == 0) revert InvalidAmount();
         
         IERC20(token).transfer(owner(), amount);
         emit ERC20Rescued(token, amount);
     }
     
     function rescueBNB(uint256 amount) external override onlyOwner {
-        if (amount == 0) revert InvalidAmount(); // ← Menggunakan dari NickgenomErrors.sol
+        if (amount == 0) revert InvalidAmount();
         if (address(this).balance < amount) revert("Insufficient balance");
         
         payable(owner()).transfer(amount);
