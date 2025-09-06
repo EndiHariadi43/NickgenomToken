@@ -9,49 +9,31 @@ on:
         required: true
         options: [bsc, bscTestnet]
         default: bsc
-      address:
-        description: "Alamat kontrak (kosongkan untuk pakai secret per-network)"
-        required: false
-        type: string
       contract:
         description: 'Qualified name, mis. "contracts/token/NickgenomPermit.sol:NickgenomPermit"'
         required: true
         default: "contracts/token/NickgenomPermit.sol:NickgenomPermit"
         type: string
       args_file:
-        description: "Path file JS/TS yang export array argumen constructor (opsional)"
+        description: "Path file JS/TS untuk argumen constructor (opsional)"
         required: false
         type: string
 
 jobs:
   verify:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - name: Install deps
-        run: npm ci
+      - run: npm ci
 
-      - name: Show versions
-        run: |
-          node -v
-          npm -v
-          npx hardhat --version
-
-      - name: Clean & Compile
-        env:
-          BSC_RPC_URL: ${{ secrets.BSC_RPC_URL }}
-          BSC_TESTNET_RPC_URL: ${{ secrets.BSC_TESTNET_RPC_URL }}
+      - name: Compile
         run: |
           npx hardhat clean
           npx hardhat compile
@@ -62,28 +44,22 @@ jobs:
         run: |
           NET="${{ inputs.network }}"
           CONTRACT_QN="${{ inputs.contract }}"
-          # Tentukan alamat: pakai input jika ada, kalau tidak pakai secret per network
-          if [ -n "${{ inputs.address }}" ]; then
-            ADDR="${{ inputs.address }}"
+
+          if [ "$NET" = "bsc" ]; then
+            ADDR="${{ secrets.CONTRACT_ADDRESS_BSC }}"
           else
-            if [ "$NET" = "bsc" ]; then
-              ADDR="${{ secrets.CONTRACT_ADDRESS_BSC }}"
-            else
-              ADDR="${{ secrets.CONTRACT_ADDRESS_BSCTESTNET }}"
-            fi
+            ADDR="${{ secrets.CONTRACT_ADDRESS_BSCTESTNET }}"
           fi
 
           if [ -z "$ADDR" ]; then
-            echo "❌ Alamat kontrak tidak ditemukan. Isi input 'address' atau set secret CONTRACT_ADDRESS_BSC / CONTRACT_ADDRESS_BSCTESTNET."
+            echo "❌ Secret alamat kontrak kosong untuk $NET"
             exit 1
           fi
-
-          echo "🔎 Verifying $CONTRACT_QN at $ADDR on $NET …"
 
           CMD="npx hardhat verify --network $NET --contract \"$CONTRACT_QN\" $ADDR"
           if [ -n "${{ inputs.args_file }}" ]; then
             CMD="$CMD --constructor-args \"${{ inputs.args_file }}\""
           fi
 
-          echo "➡️  $CMD"
+          echo "➡️ $CMD"
           eval $CMD
