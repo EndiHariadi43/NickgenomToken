@@ -22,7 +22,7 @@
 
 > The contract is **verified on BscScan**. Links and technical details are provided below for easy integration.
 
-🗺️ **Roadmap**
+🗺️ **Roadmap:**
 
 **Phase 1 — Foundation (Q1–Q2 2025)**  
 - [x] Contract deploy & BscScan verification <!-- ROADMAP:VERIFY --> ![done 2025-09-07](https://img.shields.io/badge/done-2025--09--07-brightgreen?style=flat-square)
