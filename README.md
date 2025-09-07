@@ -24,33 +24,6 @@
 
 ---
 
-🗺️ **Roadmap:**
-
-**Phase 1 — Foundation (Q1–Q2 2025)**  
-- [x] Contract deploy & BscScan verification <!-- ROADMAP:VERIFY --> ![done 2025-09-07](https://img.shields.io/badge/done-2025--09--07-brightgreen?style=flat-square)
-- [x] Whitepaper release <!-- ROADMAP:WHITEPAPER --> ![done 2025-09-07](https://img.shields.io/badge/done-2025--09--07-brightgreen?style=flat-square)
-- [ ] Initial liquidity & price discovery <!-- ROADMAP:LIQ -->
-- [ ] Website release <!-- ROADMAP:WEBSITE -->
-
-**Phase 2 — Community (Q3 2025)**  
-- [ ] Merkle airdrop #1 (allowlist) <!-- ROADMAP:AIRDROP -->
-- [ ] Listings on data aggregators (CG/CMC) <!-- ROADMAP:LISTINGS -->
-- [ ] Community quests, referral programs <!-- ROADMAP:QUESTS -->
-
-**Phase 3 — Utility (Q4 2025)**  
-- [ ] Staking dashboard (lock/unstake, rewards) <!-- ROADMAP:STAKING -->
-- [ ] AI tool access using NGM (beta) <!-- ROADMAP:AI -->
-- [ ] Strategic partnerships <!-- ROADMAP:PARTNERS -->
-
-**Phase 4 — Scale (2026)**  
-- [ ] Periodic burn events <!-- ROADMAP:BURN -->
-- [ ] Expanded exchange coverage <!-- ROADMAP:CEX -->
-- [ ] Global community chapters <!-- ROADMAP:COMMUNITY -->
-
-> Roadmap is indicative and may evolve with community input and market conditions.
-
----
-
 ## 🔑 Key Features
 - **Fixed Supply** — 1,000,000,000,000 NGM (18 decimals), no additional mint.  
 - **100% Ownership at Launch** — full initial supply held by deployer.  
