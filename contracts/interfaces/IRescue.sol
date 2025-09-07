@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.22; // Update dari 0.8.20 ke 0.8.22
+pragma solidity ^0.8.20;
 
 interface IRescue {
     function rescueERC20(address token, uint256 amount) external;

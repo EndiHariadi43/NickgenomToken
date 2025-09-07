@@ -7,7 +7,7 @@ const { BSCSCAN_API_KEY, BSC_RPC_URL, BSC_TESTNET_RPC_URL } = process.env;
 
 module.exports = {
   solidity: {
-    version: "0.8.22",
+    version: "0.8.20",
     settings: {
       optimizer: {
         enabled: true,
