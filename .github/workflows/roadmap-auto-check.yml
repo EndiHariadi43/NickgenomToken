@@ -1,26 +1,24 @@
 name: Roadmap Auto Check
 
 on:
-  # Otomatis saat workflow tertentu sukses
+  # Otomatis ketika workflow "Verify on BscScan" selesai (dan sukses)
   workflow_run:
-    workflows:
-      - Verify on BscScan
-      - Whitepaper release     # ← ceklis otomatis saat workflow ini sukses
+    workflows: ["Verify on BscScan"]
     types: [completed]
 
-  # Bisa juga manual dari tab Actions
+  # Bisa juga dijalankan manual dari tab Actions
   workflow_dispatch:
     inputs:
       task:
         description: "ROADMAP key to check"
         required: true
-        default: "WHITEPAPER"   # ← default ke WHITEPAPER sesuai permintaan
+        default: "VERIFY"
         type: choice
         options:
           - VERIFY
+          - WHITEPAPER
           - WEBSITE
           - LIQ
-          - WHITEPAPER
           - AIRDROP
           - LISTINGS
           - QUESTS
@@ -36,15 +34,13 @@ permissions:
 
 jobs:
   update-roadmap:
-    # jalan jika manual, atau jika workflow target sukses
+    # Jalan jika manual, atau jika workflow_run sukses
     if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Decide which ROADMAP key
+      - name: Decide ROADMAP key
         id: key
         shell: bash
         run: |
@@ -52,7 +48,9 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_run" ]; then
             case "${{ github.event.workflow_run.name }}" in
               "Verify on BscScan") KEY="VERIFY" ;;
-              "Whitepaper release"|"Whitepaper") KEY="WHITEPAPER" ;;  # mapping fleksibel
+              # Tambah mapping lain di bawah ini jika mau autopilot dari workflow lain:
+              # "Solidity CI"|"Compile") KEY="VERIFY" ;;
+              # "Deploy Website") KEY="WEBSITE" ;;
             esac
           else
             KEY="${{ inputs.task }}"
@@ -73,16 +71,25 @@ jobs:
             [ -f "$FILE" ] || return 0
 
             awk -v key="$MARK" -v date="$DATE" '
+            function has_done(s){ return s ~ /\(done [0-9]{4}-[0-9]{2}-[0-9]{2}\)/ }
             {
               if ($0 ~ key) {
-                # jika masih unchecked: "- [ ] ..."
+                # Hilangkan emoji ✅ agar gaya seragam
+                gsub(/ ✅/,"")
+
+                # Jika unchecked checkbox -> ubah ke [x] + tanggal
                 if ($0 ~ /^\s*-\s*\[\s\]\s/) {
-                  sub(/\[\s\]/, "[x]")
-                  if ($0 !~ /\(done /) { $0 = $0 " (done " date ")" }
+                  sub(/\[\s\]/,"[x]")
+                  if (!has_done($0)) $0 = $0 " (done " date ")"
                 }
-                # jika sudah checked tapi belum ada tanggal
-                else if ($0 ~ /^\s*-\s*\[x\]\s/ && $0 !~ /\(done /) {
+                # Jika sudah [x] tapi belum ada tanggal -> tambahkan tanggal
+                else if ($0 ~ /^\s*-\s*\[x\]\s/ && !has_done($0)) {
                   $0 = $0 " (done " date ")"
+                }
+                # Jika bukan format checklist (mis. pakai emoji) -> normalkan ke [x] + tanggal
+                else if ($0 !~ /^\s*-\s*\[(\s|x)\]\s/) {
+                  sub(/^\s*-\s*/,"- [x] ")
+                  if (!has_done($0)) $0 = $0 " (done " date ")"
                 }
               }
               print
@@ -96,7 +103,7 @@ jobs:
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add README.md docs/Whitepaper.md
-            git commit -m "chore(roadmap): auto-check $KEY on $DATE"
+            git commit -m "chore(roadmap): normalize & check ${KEY} on ${DATE}"
             git push
           else
             echo "No roadmap changes to commit."
