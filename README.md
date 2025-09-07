@@ -1,6 +1,9 @@
 # NickgenomToken (NGM) — BEP-20 on BNB Smart Chain
 
-[![Solidity CI](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/solidity.yml/badge.svg)](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/solidity.yml)
+[![Compile](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/compile.yml/badge.svg?branch=main)](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/compile.yml)
+[![Solidity CI](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/solidity.yml/badge.svg?branch=main)](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/solidity.yml)
+[![Verify on BscScan](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/verify.yml)
+[![Test](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/test.yml)
 [![Verify Workflow](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/verify.yml/badge.svg)](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/verify.yml)
 [![Verified on BscScan](https://img.shields.io/badge/BscScan-Verified-brightgreen?logo=binance&logoColor=white)](https://bscscan.com/address/0x0353aD4cAD5548de4230E36d86ed5536a0bACA16#code)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
