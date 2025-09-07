@@ -31,6 +31,6 @@ module.exports = {
     apiKey: BSCSCAN_API_KEY 
   },
   sourcify: { 
-    enabled: true 
+    enabled: false 
   },
 };
