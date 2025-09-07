@@ -1,7 +1,9 @@
 <p align="center">
   <img src="assets/logo.png" alt="NickgenomToken Logo" width="120"/>
 </p>
-> 📄 **Whitepaper:** [NickgenomToken (NGM) — Whitepaper](./docs/Whitepaper.md)
+
+📄 **Whitepaper:** [NickgenomToken (NGM) — Whitepaper](./docs/Whitepaper.md)
+
 # NickgenomToken (NGM) — BEP‑20 on BNB Smart Chain
 
 [![Compile](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/compile.yml/badge.svg?branch=main)](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/compile.yml)
@@ -68,8 +70,11 @@ NGM aims to bridge **AI, Blockchain, and Meme‑driven communities** by:
 ## 🛠️ Development
 
 ### Prerequisites
-- Node.js **22+** (tested on 22.11.x)
-- npm **10+** (tested on 10.9.x)
+- Node.js **18 LTS** (tested on 18.19.0)  
+  ✅ Officially supported by workflows & CI  
+- Node.js **20/22** (tested on 22.11.0)  
+  ⚠️ Works locally, but may cause warnings in Hardhat plugins
+- npm **10+**
 - Hardhat & Toolbox (preconfigured in this repo)
 
 ### Install
