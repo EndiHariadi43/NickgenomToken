@@ -4,41 +4,47 @@ on:
   workflow_dispatch:
     inputs:
       network:
-        description: "Network (bsc atau bscTestnet)"
-        required: true
-        default: "bsc"
         type: choice
         options: [bsc, bscTestnet]
+        default: bsc
+      contract:
+        type: string
+        default: "contracts/token/NickgenomPermit.sol:NickgenomPermit"
 
 jobs:
   verify:
     runs-on: ubuntu-latest
-    container:
-      image: node:22.11.0
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Clean install
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+
+      - name: Install deps
         run: |
-          npm cache clean --force
-          rm -rf node_modules package-lock.json
-          npm install hardhat@2.22.5
-          npm install
-          
+          npm ci || npm ci --legacy-peer-deps
+
+      - name: Compile
+        env:
+          BSC_RPC_URL: ${{ secrets.BSC_RPC_URL }}
+          BSC_TESTNET_RPC_URL: ${{ secrets.BSC_TESTNET_RPC_URL }}
+        run: |
+          npx hardhat clean
+          npx hardhat compile
+
       - name: Verify on BscScan
         env:
           BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
         run: |
-          if [ "${{ inputs.network }}" = "bsc" ]; then
-            echo "Verifying on BSC Mainnet..."
-            npx hardhat verify --network bsc "${{ secrets.CONTRACT_ADDRESS_BSC }}" \
-              --contract "contracts/token/NickgenomPermit.sol:NickgenomPermit" \
-              --compiler 0.8.20 \
-              --force
+          NET="${{ inputs.network }}"
+          CONTRACT_QN="${{ inputs.contract }}"
+          if [ "$NET" = "bsc" ]; then
+            ADDR="${{ secrets.CONTRACT_ADDRESS_BSC }}"
           else
-            echo "Verifying on BSC Testnet..."
-            npx hardhat verify --network bscTestnet "${{ secrets.CONTRACT_ADDRESS_BSCTESTNET }}" \
-              --contract "contracts/token/NickgenomPermit.sol:NickgenomPermit" \
-              --compiler 0.8.20 \
-              --force
+            ADDR="${{ secrets.CONTRACT_ADDRESS_BSCTESTNET }}"
           fi
+          if [ -z "$ADDR" ]; then
+            echo "❌ Secret alamat kontrak kosong untuk $NET"; exit 1
+          fi
+          CMD="npx hardhat verify --network $NET --contract \"$CONTRACT_QN\" $ADDR"
+          echo "➡️ $CMD"
+          eval $CMD
