@@ -68,7 +68,8 @@ NGM aims to bridge **AI, Blockchain, and Meme‑driven communities** by:
 ## 🛠️ Development
 
 ### Prerequisites
-- Node.js 20+, npm
+- Node.js **22+** (tested on 22.11.x)
+- npm **10+** (tested on 10.9.x)
 - Hardhat & Toolbox (preconfigured in this repo)
 
 ### Install
