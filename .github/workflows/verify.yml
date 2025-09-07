@@ -10,7 +10,7 @@ on:
         options: [bsc, bscTestnet]
         default: bsc
       contract:
-        description: 'Qualified name, mis. "contracts/token/NickgenomPermit.sol:NickgenomPermit"'
+        description: 'Qualified name, contoh: "contracts/token/NickgenomPermit.sol:NickgenomPermit"'
         required: true
         default: "contracts/token/NickgenomPermit.sol:NickgenomPermit"
         type: string
@@ -35,11 +35,11 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install deps
+      - name: Install dependencies
         run: |
-          npm ci --legacy-peer-deps
+          npm ci || npm ci --legacy-peer-deps
 
-      - name: Compile
+      - name: Compile contracts
         env:
           BSC_RPC_URL: ${{ secrets.BSC_RPC_URL }}
           BSC_TESTNET_RPC_URL: ${{ secrets.BSC_TESTNET_RPC_URL }}
@@ -47,7 +47,7 @@ jobs:
           npx hardhat clean
           npx hardhat compile
 
-      - name: Verify on BscScan
+      - name: Verify contract on BscScan
         env:
           BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
         run: |
