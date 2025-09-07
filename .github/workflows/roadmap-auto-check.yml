@@ -1,0 +1,91 @@
+name: Roadmap Auto Check
+
+on:
+  # Otomatis saat workflow tertentu sukses
+  workflow_run:
+    workflows: ["Verify on BscScan"]  # tambahkan nama workflow lain jika perlu
+    types: [completed]
+
+  # Bisa juga manual dari tab Actions
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "ROADMAP key to check"
+        required: true
+        default: "VERIFY"
+        type: choice
+        options:
+          - VERIFY
+          - LIQ
+          - WHITEPAPER
+          - AIRDROP
+          - LISTINGS
+          - QUESTS
+          - STAKING
+          - AI
+          - PARTNERS
+          - BURN
+          - CEX
+          - COMMUNITY
+
+permissions:
+  contents: write
+
+jobs:
+  update-roadmap:
+    # hanya jalan kalau workflow target success ATAU dijalankan manual
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Decide which ROADMAP key
+        id: key
+        shell: bash
+        run: |
+          KEY=""
+
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            case "${{ github.event.workflow_run.name }}" in
+              "Verify on BscScan") KEY="VERIFY" ;;
+              # Tambah mapping lain di sini bila ingin autocheck dari workflow lain:
+              # "Compile"|"Solidity CI") KEY="VERIFY" ;;
+            esac
+          else
+            KEY="${{ inputs.task }}"
+          fi
+
+          echo "key=$KEY" >> "$GITHUB_OUTPUT"
+
+      - name: Update README and Whitepaper
+        if: steps.key.outputs.key != ''
+        shell: bash
+        run: |
+          set -e
+          KEY="${{ steps.key.outputs.key }}"
+          DATE="$(date +'%Y-%m-%d')"
+
+          # Fungsi: centang 1 baris yang mengandung marker ROADMAP:KEY
+          mark_done () {
+            FILE="$1"
+            MARKER="<!-- ROADMAP:${KEY} -->"
+            if [ -f "$FILE" ] && grep -q "$MARKER" "$FILE"; then
+              # Ubah yang masih [ ] jadi [x] dan tambahkan (done DATE) jika belum ada
+              sed -i -E "s/^(\s*-\s*)\[\s\]\s(.*${MARKER}.*)$/\1[x] \2 (done ${DATE})/g" "$FILE"
+              # Jika sudah [x] tapi belum ada tanggal, tambahkan tanggal
+              sed -i -E "s/^(\s*-\s*)\[x\]\s(.*${MARKER})(?!.*done ).*$/\1[x] \2 (done ${DATE})/g" "$FILE"
+            fi
+          }
+
+          mark_done "README.md"
+          mark_done "docs/Whitepaper.md"
+
+          if git status --porcelain | grep -E "README\.md|docs/Whitepaper\.md" >/dev/null 2>&1; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add README.md docs/Whitepaper.md 2>/dev/null || true
+            git commit -m "chore(roadmap): auto-check ${KEY} on ${DATE}"
+            git push
+          else
+            echo "No roadmap changes to commit."
+          fi
