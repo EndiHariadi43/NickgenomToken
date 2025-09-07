@@ -66,25 +66,26 @@ Initial allocation (flexible, community-guided; subject to on-chain disclosures)
 ---
 
 ## 6. Roadmap
+
 **Phase 1 — Foundation (Q1–Q2 2025)**  
-- Contract deploy & BscScan verification ✅  
-- Initial liquidity & price discovery  
-- Whitepaper & website release
+- [x] Contract deploy & BscScan verification ✅ <!-- ROADMAP:VERIFY -->
+- [ ] Initial liquidity & price discovery <!-- ROADMAP:LIQ -->
+- [ ] Whitepaper & website release <!-- ROADMAP:WHITEPAPER -->
 
 **Phase 2 — Community (Q3 2025)**  
-- Merkle airdrop #1 (allowlist)  
-- Listings on data aggregators (CG/CMC)  
-- Community quests, referral programs
+- [ ] Merkle airdrop #1 (allowlist) <!-- ROADMAP:AIRDROP -->
+- [ ] Listings on data aggregators (CG/CMC) <!-- ROADMAP:LISTINGS -->
+- [ ] Community quests, referral programs <!-- ROADMAP:QUESTS -->
 
 **Phase 3 — Utility (Q4 2025)**  
-- Staking dashboard (lock/unstake, rewards)  
-- AI tool access using NGM (beta)  
-- Strategic partnerships
+- [ ] Staking dashboard (lock/unstake, rewards) <!-- ROADMAP:STAKING -->
+- [ ] AI tool access using NGM (beta) <!-- ROADMAP:AI -->
+- [ ] Strategic partnerships <!-- ROADMAP:PARTNERS -->
 
 **Phase 4 — Scale (2026)**  
-- Periodic burn events  
-- Expanded exchange coverage  
-- Global community chapters
+- [ ] Periodic burn events <!-- ROADMAP:BURN -->
+- [ ] Expanded exchange coverage <!-- ROADMAP:CEX -->
+- [ ] Global community chapters <!-- ROADMAP:COMMUNITY -->
 
 > Roadmap is indicative and may evolve with community input and market conditions.
 
