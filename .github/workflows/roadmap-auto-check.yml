@@ -1,14 +1,12 @@
 name: Roadmap Auto Check
 
 on:
-  # Otomatis saat workflow tertentu sukses
   workflow_run:
     workflows:
       - "Verify on BscScan"
       - "Whitepaper release"
     types: [completed]
 
-  # Bisa juga manual dari tab Actions
   workflow_dispatch:
     inputs:
       key:
@@ -50,12 +48,20 @@ jobs:
             case "${{ github.event.workflow_run.name }}" in
               "Verify on BscScan") KEY="VERIFY" ;;
               "Whitepaper release") KEY="WHITEPAPER" ;;
-              # Tambahkan mapping lain jika perlu
             esac
           else
             KEY="${{ inputs.key }}"
           fi
           echo "key=$KEY" >> "$GITHUB_OUTPUT"
+
+      - name: Normalize old ✅ to GitHub task-list
+        shell: bash
+        run: |
+          for f in README.md docs/Whitepaper.md; do
+            [ -f "$f" ] || continue
+            # Ubah baris yang diawali "- ✅ " menjadi "- [x] "
+            sed -i -E 's/^([[:space:]]*-[[:space:]]*)✅[[:space:]]/\1[x] /g' "$f"
+          done
 
       - name: Update README and Whitepaper
         if: steps.key.outputs.key != ''
@@ -73,15 +79,14 @@ jobs:
             awk -v key="$MARK" -v date="$DATE" '
             {
               if ($0 ~ key) {
-                # Jika masih kosong [ ]
-                if ($0 ~ /^\s*-\s*\[\s\]\s/) {
-                  sub(/\[\s\]/, "✅")
-                  if ($0 !~ /done /) { $0 = $0 " (done " date ")" }
+                # Jika masih unchecked "- [ ] ..."
+                if ($0 ~ /^[[:space:]]*-[[:space:]]*\[[[:space:]]\][[:space:]]/) {
+                  sub(/\[[[:space:]]\]/, "[x]")
+                  if ($0 !~ /\(done /) { $0 = $0 " (done " date ")" }
                 }
-                # Jika sudah [x], ubah juga jadi ✅
-                else if ($0 ~ /^\s*-\s*\[x\]\s/) {
-                  sub(/\[x\]/, "✅")
-                  if ($0 !~ /done /) { $0 = $0 " (done " date ")" }
+                # Jika sudah checked "- [x] ..." tapi belum ada tanggal
+                else if ($0 ~ /^[[:space:]]*-[[:space:]]*\[x\][[:space:]]/ && $0 !~ /\(done /) {
+                  $0 = $0 " (done " date ")"
                 }
               }
               print
@@ -95,7 +100,7 @@ jobs:
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add README.md docs/Whitepaper.md
-            git commit -m "chore(roadmap): auto-check $KEY on $DATE"
+            git commit -m "chore(roadmap): normalize & auto-check $KEY on $DATE"
             git push
           else
             echo "No roadmap changes to commit."
