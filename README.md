@@ -22,6 +22,7 @@
 
 > The contract is **verified on BscScan**. Links and technical details are provided below for easy integration.
 
+
 🗺️ **Roadmap:**
 
 **Phase 1 — Foundation (Q1–Q2 2025)**  
