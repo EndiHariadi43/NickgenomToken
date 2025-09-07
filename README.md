@@ -22,18 +22,7 @@
 
 > The contract is **verified on BscScan**. Links and technical details are provided below for easy integration.
 
----
-
-## 🔑 Key Features
-- **Fixed Supply** — 1,000,000,000,000 NGM (18 decimals), no additional mint.  
-- **100% Ownership at Launch** — full initial supply held by deployer.  
-- **Burnable** — supports `burn` / `burnFrom` to enable long‑term scarcity.  
-- **EIP‑2612 Permit** — gasless approvals for modern DeFi & dApp integrations.  
-- **No Tax / No Blacklist / No Limits** — not a honeypot; free transfers.  
-
----
-
-## 🗺️ Roadmap
+### 🗺️ Roadmap
 
 **Phase 1 — Foundation (Q1–Q2 2025)**  
 - [x] Contract deploy & BscScan verification <!-- ROADMAP:VERIFY --> ![done 2025-09-07](https://img.shields.io/badge/done-2025--09--07-brightgreen?style=flat-square)
@@ -57,6 +46,15 @@
 - [ ] Global community chapters <!-- ROADMAP:COMMUNITY -->
 
 > Roadmap is indicative and may evolve with community input and market conditions.
+
+---
+
+## 🔑 Key Features
+- **Fixed Supply** — 1,000,000,000,000 NGM (18 decimals), no additional mint.  
+- **100% Ownership at Launch** — full initial supply held by deployer.  
+- **Burnable** — supports `burn` / `burnFrom` to enable long‑term scarcity.  
+- **EIP‑2612 Permit** — gasless approvals for modern DeFi & dApp integrations.  
+- **No Tax / No Blacklist / No Limits** — not a honeypot; free transfers.  
 
 ---
 
