@@ -1,14 +1,12 @@
 name: Roadmap Auto Check
 
 on:
-  # Otomatis saat workflow tertentu sukses
   workflow_run:
-    workflows: 
+    workflows:
       - "Verify on BscScan"
       - "Whitepaper release"
     types: [completed]
 
-  # Bisa juga manual dari tab Actions
   workflow_dispatch:
     inputs:
       key:
@@ -50,14 +48,13 @@ jobs:
             case "${{ github.event.workflow_run.name }}" in
               "Verify on BscScan") KEY="VERIFY" ;;
               "Whitepaper release") KEY="WHITEPAPER" ;;
-              # Tambahkan mapping lain jika Anda ingin auto-check dari workflow lain
             esac
           else
             KEY="${{ inputs.key }}"
           fi
           echo "key=$KEY" >> "$GITHUB_OUTPUT"
 
-      - name: Update README and Whitepaper
+      - name: Update README and Whitepaper (turn checkbox into green check)
         if: steps.key.outputs.key != ''
         shell: bash
         run: |
@@ -72,11 +69,11 @@ jobs:
 
             awk -v key="$MARK" -v date="$DATE" '
             {
-              if ($0 ~ key) {
-                if ($0 ~ /^\s*-\s*\[\s\]\s/) {
-                  sub(/\[\s\]/, "[x]")
-                  if ($0 !~ /\(done /) { $0 = $0 " (done " date ")" }
-                } else if ($0 ~ /^\s*-\s*\[x\]\s/ && $0 !~ /\(done /) {
+              if (index($0, key)) {
+                # Ubah "- [ ] ..." / "- [x] ..." menjadi "- ✅ ..."
+                sub(/- \[[ x]\]/, "- ✅")
+                # Tambahkan tanggal jika belum ada
+                if ($0 !~ /\(done[[:space:]]+[0-9]{4}-[0-9]{2}-[0-9]{2}\)/) {
                   $0 = $0 " (done " date ")"
                 }
               }
@@ -91,7 +88,7 @@ jobs:
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add README.md docs/Whitepaper.md
-            git commit -m "chore(roadmap): auto-check $KEY on $DATE"
+            git commit -m "chore(roadmap): auto-check ${KEY} with ✅ on ${DATE}"
             git push
           else
             echo "No roadmap changes to commit."
