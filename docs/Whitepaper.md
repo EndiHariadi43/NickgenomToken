@@ -69,8 +69,9 @@ Initial allocation (flexible, community-guided; subject to on-chain disclosures)
 
 **Phase 1 — Foundation (Q1–Q2 2025)**  
 - [x] Contract deploy & BscScan verification ✅ <!-- ROADMAP:VERIFY -->
+- [ ] Whitepaper release <!-- ROADMAP:VERIFY -->
 - [ ] Initial liquidity & price discovery <!-- ROADMAP:LIQ -->
-- [ ] Whitepaper & website release <!-- ROADMAP:WHITEPAPER -->
+- [ ] Website release <!-- ROADMAP:WHITEPAPER -->
 
 **Phase 2 — Community (Q3 2025)**  
 - [ ] Merkle airdrop #1 (allowlist) <!-- ROADMAP:AIRDROP -->
