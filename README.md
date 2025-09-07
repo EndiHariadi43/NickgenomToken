@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.png" alt="NickgenomToken Logo" width="120"/>
+  <img src="assets/ngm-logo.png" alt="NickgenomToken Logo" width="120"/>
 </p>
 
 📄 **Whitepaper:** [NickgenomToken (NGM) — Whitepaper](./docs/Whitepaper.md)
