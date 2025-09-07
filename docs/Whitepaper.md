@@ -68,7 +68,7 @@ Initial allocation (flexible, community-guided; subject to on-chain disclosures)
 ## 6. Roadmap
 
 **Phase 1 — Foundation (Q1–Q2 2025)**  
-- [x] Contract deploy & BscScan verification <!-- ROADMAP:VERIFY --> (done 2025-09-07)
+- ✅ Contract deploy & BscScan verification <!-- ROADMAP:VERIFY --> (done 2025-09-07)
 - [x] Whitepaper release <!-- ROADMAP:WHITEPAPER --> (done 2025-09-07)
 - [ ] Initial liquidity & price discovery <!-- ROADMAP:LIQ -->
 - [ ] Website release <!-- ROADMAP:WEBSITE -->
