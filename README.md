@@ -1,7 +1,7 @@
 <p align="center">
   <img src="assets/logo.png" alt="NickgenomToken Logo" width="120"/>
 </p>
-
+> 📄 **Whitepaper:** [NickgenomToken (NGM) — Whitepaper](./docs/Whitepaper.md)
 # NickgenomToken (NGM) — BEP‑20 on BNB Smart Chain
 
 [![Compile](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/compile.yml/badge.svg?branch=main)](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/compile.yml)
