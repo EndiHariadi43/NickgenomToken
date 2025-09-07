@@ -34,6 +34,11 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      
+      - run: |
+          node -v
+          npm -v
+          npm config get engine-strict --location=project      
 
       - name: Install dependencies
         run: |
