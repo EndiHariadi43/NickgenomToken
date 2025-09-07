@@ -16,6 +16,7 @@ on:
         type: choice
         options:
           - VERIFY
+          - WEBSITE
           - LIQ
           - WHITEPAPER
           - AIRDROP
@@ -48,6 +49,7 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_run" ]; then
             case "${{ github.event.workflow_run.name }}" in
               "Verify on BscScan") KEY="VERIFY" ;;
+              "Whitepaper release") KEY="WHITEPAPER" ;;
               # Tambah mapping lain di sini bila ingin autocheck dari workflow lain:
               # "Compile"|"Solidity CI") KEY="VERIFY" ;;
             esac
