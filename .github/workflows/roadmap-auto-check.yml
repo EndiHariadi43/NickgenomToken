@@ -1,12 +1,14 @@
 name: Roadmap Auto Check
 
 on:
+  # Auto-jalan ketika workflow tertentu selesai
   workflow_run:
     workflows:
       - "Verify on BscScan"
       - "Whitepaper release"
     types: [completed]
 
+  # Bisa dijalankan manual dari tab Actions
   workflow_dispatch:
     inputs:
       key:
@@ -48,28 +50,20 @@ jobs:
             case "${{ github.event.workflow_run.name }}" in
               "Verify on BscScan") KEY="VERIFY" ;;
               "Whitepaper release") KEY="WHITEPAPER" ;;
+              # tambahkan mapping lain bila perlu
             esac
           else
             KEY="${{ inputs.key }}"
           fi
           echo "key=$KEY" >> "$GITHUB_OUTPUT"
 
-      - name: Normalize legacy lines (✅ → [x])
-        shell: bash
-        run: |
-          for f in README.md docs/Whitepaper.md; do
-            [ -f "$f" ] || continue
-            sed -i -E 's/^([[:space:]]*-[[:space:]]*)✅[[:space:]]/\1[x] /g' "$f"
-          done
-
-      - name: Update README and Whitepaper (use green badge)
+      - name: Update README and Whitepaper (green badge, replace old)
         if: steps.key.outputs.key != ''
         shell: bash
         run: |
           set -e
           KEY="${{ steps.key.outputs.key }}"
           DATE="$(date +'%Y-%m-%d')"
-          # Shields.io butuh double-hyphen untuk menampilkan '-' literal
           DATE_SHIELDS="${DATE//-/"--"}"
           BADGE="![done ${DATE}](https://img.shields.io/badge/done-${DATE_SHIELDS}-brightgreen?style=flat-square)"
 
@@ -78,25 +72,26 @@ jobs:
             MARK="<!-- ROADMAP:${KEY} -->"
             [ -f "$FILE" ] || return 0
 
-            # 1) Centang task list & tambahkan badge jika belum ada
-            awk -v key="$MARK" -v badge="$BADGE" '
+            awk -v mark="$MARK" -v badge="$BADGE" '
             {
-              if ($0 ~ key) {
-                # unchecked: "- [ ] ..." -> "- [x] ..." + badge (kalau belum ada)
-                if ($0 ~ /^[[:space:]]*-[[:space:]]*\[[[:space:]]\][[:space:]]/) {
-                  sub(/\[[[:space:]]\]/, "[x]")
-                  if ($0 !~ /img\.shields\.io\/badge\/done-/) { $0 = $0 " " badge }
-                }
-                # already checked: pastikan ada badge
-                else if ($0 ~ /^[[:space:]]*-[[:space:]]*\[x\][[:space:]]/ && $0 !~ /img\.shields\.io\/badge\/done-/) {
-                  $0 = $0 " " badge
-                }
+              if ($0 ~ mark) {
+                # Pastikan checklist bertanda [x]
+                if ($0 ~ /^\s*-\s*\[\s\]\s/) { sub(/\[\s\]/, "[x]") }
+
+                # Hapus format lama "(done YYYY-MM-DD)" jika masih ada
+                gsub(/\(done[[:space:]]+[0-9]{4}-[0-9]{2}-[0-9]{2}\)/, "")
+
+                # Hapus badge lama bila ada (agar tidak dobel)
+                gsub(/ *!\[done[[:space:]]+[0-9-]+\]\(https:\/\/img\.shields\.io\/badge\/done-[0-9-]+-brightgreen\?style=flat-square\)/, "")
+
+                # Trim spasi di ujung setelah penghapusan
+                sub(/[[:space:]]+$/, "")
+
+                # Tambahkan badge terbaru
+                $0 = $0 " " badge
               }
               print
             }' "$FILE" > "$FILE.tmp" && mv "$FILE.tmp" "$FILE"
-
-            # 2) Ganti pola lama "(done YYYY-MM-DD)" menjadi badge hijau
-            sed -i -E "s/\(done[[:space:]]+[0-9]{4}-[0-9]{2}-[0-9]{2}\)/ ${BADGE//\//\\/}/g" "$FILE"
           }
 
           mark_done "README.md"
@@ -106,7 +101,7 @@ jobs:
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add README.md docs/Whitepaper.md
-            git commit -m "chore(roadmap): mark $KEY with green badge on $DATE"
+            git commit -m "chore(roadmap): mark ${KEY} done on ${DATE} (green badge)"
             git push
           else
             echo "No roadmap changes to commit."
