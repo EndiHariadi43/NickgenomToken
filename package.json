@@ -15,6 +15,7 @@
     "format:check": "prettier --check \"**/*.{js,sol}\""
   },
   "devDependencies": {
+    "hardhat": "^2.11.0",
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "@nomicfoundation/hardhat-verify": "^2.0.8",
     "@openzeppelin/contracts": "^5.0.2",
