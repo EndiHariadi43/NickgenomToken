@@ -4,7 +4,7 @@
 We take security seriously. If you discover a vulnerability, please report it to us immediately.
 
 ### How to Report
-Send an email to: security@nickgenom.io
+Send an email to: security@nickgenom.io or endi.linux.mint@gmail.com
 
 Include the following information:
 - Description of the vulnerability
