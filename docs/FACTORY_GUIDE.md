@@ -6,8 +6,8 @@ Each new token deployed through this factory uses the **SimpleERC20** implementa
 ---
 
 ## 📌 Contract Address
-- **Factory Address (Mainnet):** `0xYourFactoryAddressHere`  
-  [View on BscScan](https://bscscan.com/address/0xYourFactoryAddressHere)
+- **Factory Address (Mainnet):** `0x0878d35501e9d5a31fbf6531fcddd23efea0e053`  
+  [View on BscScan](https://bscscan.com/address/0x0878d35501e9d5a31fbf6531fcddd23efea0e053)
 
 ---
 
