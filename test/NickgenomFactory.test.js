@@ -51,7 +51,7 @@ describe("NickgenomFactory", function () {
       } catch (_) { /* not a factory log */ }
     }
     expect(tokenAddress, "TokenDeployed not found").to.not.equal(null);
-    expect(ethers.isAddress(tokenAddress)).to.equal(true);
+    expect(tokenAddress).to.be.properAddress;
 
     // Attach ERC20 and check balances/supply
     const SimpleERC20 = await ethers.getContractFactory("SimpleERC20");
