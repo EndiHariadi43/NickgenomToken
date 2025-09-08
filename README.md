@@ -2,7 +2,9 @@
   <img src="assets/ngm-logo.png" alt="NickgenomToken Logo" width="120"/>
 </p>
 
-📄 **Whitepaper:** [NickgenomToken (NGM) — Whitepaper](./docs/Whitepaper.md)
+📄 **Whitepaper:** [NickgenomToken (NGM) — Whitepaper](./docs/Whitepaper.md)  
+📘 **API Reference:** [NickgenomToken (NGM) — API.md](./docs/API.md)  
+🛠️ **Developer Guide:** [NickgenomToken (NGM) — DEV_GUIDE.md](./docs/DEV_GUIDE.md)
 
 # NickgenomToken (NGM) — BEP‑20 on BNB Smart Chain
 
