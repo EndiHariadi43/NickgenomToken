@@ -67,6 +67,5 @@ NickgenomToken/
 
 ---
 
-⚠️ Reminder:  
-- Only share `README.md`, `Whitepaper.md`, and `API.md` with the public.  
+⚠️ Reminder:    
 - This `DEV_GUIDE.md` is strictly for internal development and should not contain sensitive data.
