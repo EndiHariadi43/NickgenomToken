@@ -126,5 +126,32 @@ For ideas and bugs, open an **Issue**.
 
 ---
 
+## 🔒 Official Contract
+
+> **ONLY this address is official for Nickgenom (NGM):**  
+> `0x0353aD4cAD5548dE4230E36d86ed5536a0bACA16`  
+> BscScan: https://bscscan.com/address/0x0353aD4cAD5548dE4230E36d86ed5536a0bACA16
+
+Any other address—even if it uses the same name/symbol/logo—is **NOT** Nickgenom (NGM).
+
+### Impersonation Notice
+- NGM is open-source; third parties may deploy **different** contracts from similar code.
+- Those deployments are **not affiliated** with the Nickgenom team unless explicitly stated here.
+- Always verify the **checksum** address above and cross-check on BscScan.
+
+---
+
+## Brand & Trademark Policy (Non-Code)
+
+- The **Nickgenom** name, **NGM** ticker, and official **logos** are brand assets.
+- Using the brand to imply endorsement/affiliation is **prohibited** without written permission.
+- Fork/clone of the **code** is allowed under MIT (see LICENSE), but must **not** claim to be the official Nickgenom (NGM) unless authorized.
+
+---
+
 ## 📄 License
 This project is licensed under the **MIT** license — see [LICENSE](./LICENSE).
+
+> **Note:** Scripts in this repository cannot modify the already-deployed, verified Nickgenom (NGM) contract.  
+> Any “deploy” command creates a **new** contract at a **different** address.  
+> The **only** official NGM contract is listed above.
