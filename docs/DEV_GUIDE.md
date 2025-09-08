@@ -33,6 +33,9 @@ npx hardhat test
 - Never commit `PRIVATE_KEY` or `.env`.
 - Use **GitHub Secrets** for workflow automation (e.g. `BSCSCAN_API_KEY`).
 - Binance Wallet / MetaMask is used for deployment; **no private keys** are stored here.
+- **Note for contributors**:  
+  You do not need `BSCSCAN_API_KEY` for local development (compile/test).  
+  It is only required if you want to run verification (`npx hardhat verify`) against BscScan.
 
 ---
 
