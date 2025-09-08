@@ -36,7 +36,14 @@ npx hardhat test
 - **Note for contributors**:  
   You do not need `BSCSCAN_API_KEY` for local development (compile/test).  
   It is only required if you want to run verification (`npx hardhat verify`) against BscScan.
-
+### Verification Notes
+- BscScan verification requires `BSCSCAN_API_KEY`.  
+- Contributors without an API key can skip this step; compilation and testing will still work.  
+- Alternatively, enable Sourcify in `hardhat.config.js` for open-source verification without an API key:
+  ```js
+  sourcify: { enabled: true }
+  ```
+  
 ---
 
 ## 🛠️ Workflows
