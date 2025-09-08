@@ -2,6 +2,7 @@
 require("dotenv/config");
 require("@nomicfoundation/hardhat-verify");
 require("@nomicfoundation/hardhat-toolbox");
+require("@nomicfoundation/hardhat-chai-matchers");
 
 const { BSCSCAN_API_KEY, BSC_RPC_URL, BSC_TESTNET_RPC_URL } = process.env;
 
