@@ -6,10 +6,11 @@ Do **NOT** share private keys or secrets in public repositories.
 ---
 
 ## 📦 Requirements
-- Node.js 20+
-- npm 10+
-- Hardhat ^2.22
-- OpenZeppelin contracts ^5.4
+- Node.js **22.x** (tested on 22.11.0)  
+- npm **10.x**  
+- Hardhat ^2.22  
+- OpenZeppelin contracts ^5.0.2  
+- TypeScript support (via `ts-node` and `typechain`)  
 
 Install dependencies:
 ```bash
