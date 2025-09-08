@@ -141,6 +141,29 @@ Any other address—even if it uses the same name/symbol/logo—is **NOT** Nickg
 
 ---
 
+## Official Address
+
+- **Nickgenom (NGM) – BNB Smart Chain (Mainnet):**  
+  `0x0353aD4cAD5548dE4230E36d86ed5536a0bACA16`  
+  BscScan: https://bscscan.com/address/0x0353aD4cAD5548dE4230E36d86ed5536a0bACA16
+
+Only the address above is official. Any other address is unrelated.
+
+## Impersonation & Phishing
+
+- Beware of tokens/contracts using similar names or symbols.
+- Confirm links only from our official channels (README, Whitepaper, website, Telegram/X).
+- Never share seed phrases or private keys. The Nickgenom team will **never** ask for them.
+
+## Reporting
+
+If you discover a security issue or impersonation attempt, please open a confidential report via:
+- GitHub Security Advisories (Private)  
+- Telegram: @NGM_token (DM admins only)  
+Include transaction hashes, addresses, and steps to reproduce if relevant.
+
+---
+
 ## Brand & Trademark Policy (Non-Code)
 
 - The **Nickgenom** name, **NGM** ticker, and official **logos** are brand assets.
