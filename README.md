@@ -2,10 +2,6 @@
   <img src="assets/ngm-logo.png" alt="NickgenomToken Logo" width="120"/>
 </p>
 
-📄 **Whitepaper:** [NickgenomToken (NGM) — Whitepaper](./docs/Whitepaper.md)  
-📘 **API Reference:** [NickgenomToken (NGM) — API.md](./docs/API.md)  
-🛠️ **Developer Guide:** [NickgenomToken (NGM) — DEV_GUIDE.md](./docs/DEV_GUIDE.md)
-
 # NickgenomToken (NGM) — BEP‑20 on BNB Smart Chain
 
 [![Compile](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/compile.yml/badge.svg?branch=main)](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/compile.yml)
@@ -58,6 +54,14 @@ NGM aims to bridge **AI, Blockchain, and Meme‑driven communities** by:
 🔗 **BscScan Links**
 - [Source Code & Read Contract](https://bscscan.com/address/0x0353aD4cAD5548de4230E36d86ed5536a0bACA16#code)  
 - [Transactions](https://bscscan.com/address/0x0353aD4cAD5548de4230E36d86ed5536a0bACA16)
+
+---
+
+## 📚 Guides
+- [Whitepaper](./docs/Whitepaper.md)  
+- [API Reference](./docs/API.md)  
+- [Developer Guide](./docs/DEV_GUIDE.md)  
+- [Factory User Guide](./docs/FACTORY_GUIDE.md)
 
 ---
 
