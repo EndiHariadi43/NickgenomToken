@@ -65,6 +65,18 @@ NGM aims to bridge **AI, Blockchain, and Meme‑driven communities** by:
 
 ---
 
+## 📦 Deploy Your Own Token
+Anyone can create their own ERC-20 token using the official **NickgenomFactory** contract on BNB Smart Chain.  
+See: [Factory User Guide](./docs/FACTORY_GUIDE.md)  
+
+- **Factory Address (Mainnet):** `0x0878d35501e9d5a31fbf6531fcddd23efea0e053`  
+- [View on BscScan](https://bscscan.com/address/0x0878d35501e9d5a31fbf6531fcddd23efea0e053#code)  
+
+Tokens deployed via the factory are simple `ERC20` contracts (burnable, Ownable) and **not the official NGM**.  
+This feature is intended as a **public mini-launchpad** for experimentation and community projects.
+
+---
+
 ## 🧭 Add to Your Wallet
 1. Open **MetaMask** or **TrustWallet**  
 2. Select **BNB Smart Chain (BEP‑20)**  
