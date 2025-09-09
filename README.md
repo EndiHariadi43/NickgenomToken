@@ -12,6 +12,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![Build with Remix](https://img.shields.io/badge/Build-Remix-blue?logo=ethereum)](https://remix.ethereum.org)
 [![BNB Chain](https://img.shields.io/badge/Chain-BNB_SmartChain-yellow?logo=binance)](https://www.bnbchain.org)
+[![Factory: Verified](https://img.shields.io/badge/Factory-Verified_on_BscScan-brightgreen?logo=binance&logoColor=white)](https://bscscan.com/address/0x0878d35501e9d5a31fbf6531fcddd23efea0e053#code)
 [![Telegram](https://img.shields.io/badge/Telegram-Join%20Group-26A5E4?logo=telegram&logoColor=white)](https://t.me/NGM_token)
 
 ---
