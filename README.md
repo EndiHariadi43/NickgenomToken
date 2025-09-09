@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/ngm-logo.png" alt="NickgenomToken Logo" width="120"/>
+</p>
+
 # NickgenomToken (NGM) — BEP‑20 on BNB Smart Chain
 
 [![Compile](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/compile.yml/badge.svg?branch=main)](https://github.com/EndiHariadi43/NickgenomToken/actions/workflows/compile.yml)
@@ -57,19 +61,7 @@ NGM aims to bridge **AI, Blockchain, and Meme‑driven communities** by:
 - [Whitepaper](./docs/Whitepaper.md)  
 - [API Reference](./docs/API.md)  
 - [Developer Guide](./docs/DEV_GUIDE.md)  
-- [Factory User Guide](./docs/FACTORY_GUIDE.md)  
-
----
-
-## 📦 Deploy Your Own Token
-Anyone can create their own ERC-20 token using the official **NickgenomFactory** contract on BNB Smart Chain.  
-See: [Factory User Guide](./docs/FACTORY_GUIDE.md)  
-
-- **Factory Address (Mainnet):** `0x0878d35501e9d5a31fbf6531fcddd23efea0e053`  
-- [View on BscScan](https://bscscan.com/address/0x0878d35501e9d5a31fbf6531fcddd23efea0e053#code)  
-
-Tokens deployed via the factory are simple `ERC20` contracts (burnable, Ownable) and **not the official NGM**.  
-This feature is intended as a **public mini-launchpad** for experimentation and community projects.
+- [Factory User Guide](./docs/FACTORY_GUIDE.md)
 
 ---
 
@@ -84,8 +76,11 @@ This feature is intended as a **public mini-launchpad** for experimentation and 
 ## 🛠️ Development
 
 ### Prerequisites
-- Node.js **22+** (tested on 22.11.x)
-- npm **10+** (tested on 10.9.x)
+- Node.js **18 LTS** (tested on 18.19.0)  
+  ✅ Officially supported by workflows & CI  
+- Node.js **20/22** (tested on 22.11.0)  
+  ⚠️ Works locally, but may cause warnings in Hardhat plugins
+- npm **10+**
 - Hardhat & Toolbox (preconfigured in this repo)
 
 ### Install
@@ -135,5 +130,55 @@ For ideas and bugs, open an **Issue**.
 
 ---
 
+## 🔒 Official Contract
+
+> **ONLY this address is official for Nickgenom (NGM):**  
+> `0x0353aD4cAD5548dE4230E36d86ed5536a0bACA16`  
+> BscScan: https://bscscan.com/address/0x0353aD4cAD5548dE4230E36d86ed5536a0bACA16
+
+Any other address—even if it uses the same name/symbol/logo—is **NOT** Nickgenom (NGM).
+
+### Impersonation Notice
+- NGM is open-source; third parties may deploy **different** contracts from similar code.
+- Those deployments are **not affiliated** with the Nickgenom team unless explicitly stated here.
+- Always verify the **checksum** address above and cross-check on BscScan.
+
+---
+
+## Official Address
+
+- **Nickgenom (NGM) – BNB Smart Chain (Mainnet):**  
+  `0x0353aD4cAD5548dE4230E36d86ed5536a0bACA16`  
+  BscScan: https://bscscan.com/address/0x0353aD4cAD5548dE4230E36d86ed5536a0bACA16
+
+Only the address above is official. Any other address is unrelated.
+
+## Impersonation & Phishing
+
+- Beware of tokens/contracts using similar names or symbols.
+- Confirm links only from our official channels (README, Whitepaper, website, Telegram/X).
+- Never share seed phrases or private keys. The Nickgenom team will **never** ask for them.
+
+## Reporting
+
+If you discover a security issue or impersonation attempt, please open a confidential report via:
+- GitHub Security Advisories (Private)  
+- Telegram: @NGM_token (DM admins only)  
+Include transaction hashes, addresses, and steps to reproduce if relevant.
+
+---
+
+## Brand & Trademark Policy (Non-Code)
+
+- The **Nickgenom** name, **NGM** ticker, and official **logos** are brand assets.
+- Using the brand to imply endorsement/affiliation is **prohibited** without written permission.
+- Fork/clone of the **code** is allowed under MIT (see LICENSE), but must **not** claim to be the official Nickgenom (NGM) unless authorized.
+
+---
+
 ## 📄 License
 This project is licensed under the **MIT** license — see [LICENSE](./LICENSE).
+
+> **Note:** Scripts in this repository cannot modify the already-deployed, verified Nickgenom (NGM) contract.  
+> Any “deploy” command creates a **new** contract at a **different** address.  
+> The **only** official NGM contract is listed above.
