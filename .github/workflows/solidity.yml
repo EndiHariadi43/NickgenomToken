@@ -1,15 +1,20 @@
 name: Solidity CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
+    paths:
+      - "contracts/**"
+      - "hardhat.*"
+      - "package.json"
   pull_request:
     branches: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,21 +22,14 @@ jobs:
       contents: read
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-      
-      - run: |
-          node -v
-          npm -v
-          npm config get engine-strict --location=project
+          cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install deps
         run: |
           if [ -f package-lock.json ]; then
             npm ci || npm ci --legacy-peer-deps
@@ -39,11 +37,11 @@ jobs:
             npm install --legacy-peer-deps
           fi
 
-      - name: Compile contracts
+      - name: Remove flattened artifacts (defensive)
+        run: |
+          find contracts -name "*_flat.sol" -delete || true
+
+      - name: Compile
         run: |
           npx hardhat clean
-          npx hardhat compile
-
-      # Kalau memang punya test, aktifkan step ini.
-      # - name: Run tests
-      #   run: npx hardhat test
+          npx hardhat compile --force
