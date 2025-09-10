@@ -68,7 +68,7 @@ Initial allocation (flexible, community-guided; subject to on-chain disclosures)
 ## 6. Roadmap
 
 **Phase 1 — Foundation (Q1–Q2 2025)**  
-- [x] Contract deploy & BscScan verification <!-- ROADMAP:VERIFY --> ![done 2025-09-08](https://img.shields.io/badge/done-2025--09--08-brightgreen?style=flat-square)
+- [x] Contract deploy & BscScan verification <!-- ROADMAP:VERIFY --> ![done 2025-09-10](https://img.shields.io/badge/done-2025--09--10-brightgreen?style=flat-square)
 - [x] Whitepaper release <!-- ROADMAP:WHITEPAPER --> ![done 2025-09-07](https://img.shields.io/badge/done-2025--09--07-brightgreen?style=flat-square)
 - [ ] Initial liquidity & price discovery <!-- ROADMAP:LIQ -->
 - [ ] Website release <!-- ROADMAP:WEBSITE -->
