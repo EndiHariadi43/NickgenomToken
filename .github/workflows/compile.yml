@@ -7,6 +7,10 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   compile:
     runs-on: ubuntu-latest
@@ -22,11 +26,12 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      
-      - run: |
+
+      - name: Show tool versions
+        run: |
           node -v
           npm -v
-          npm config get engine-strict --location=project
+          npm config get engine-strict --location=project || true
 
       - name: Install dependencies
         run: |
@@ -36,12 +41,19 @@ jobs:
             npm install --legacy-peer-deps
           fi
 
+      # (Opsional) Hindari ikut meng-compile file flatten untuk verifikasi
+      - name: Remove flattened contracts (if any)
+        run: |
+          find contracts -name "*_flat.sol" -delete || true
+
       - name: Compile contracts
         run: |
           npx hardhat clean
-          npx hardhat compile
+          npx hardhat compile --force
 
+      # Simpan artefak utama (selalu upload, bahkan jika step sebelumnya gagal)
       - name: Upload build artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: hardhat-artifacts-${{ github.sha }}
@@ -50,5 +62,16 @@ jobs:
             cache/
             typechain-types/
           if-no-files-found: warn
-          retention-days: 7
+          retention-days: 1
+          compression-level: 6
+
+      # (Opsional) Simpan build-info & debug logs terpisah
+      - name: Upload build-info
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hardhat-build-info-${{ github.sha }}
+          path: artifacts/build-info/
+          if-no-files-found: ignore
+          retention-days: 1
           compression-level: 6
