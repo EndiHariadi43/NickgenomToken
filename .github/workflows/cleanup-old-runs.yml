@@ -1,0 +1,28 @@
+name: Cleanup old workflow runs (gh api)
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  actions: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Keep only last 3 runs per workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          # Ambil semua workflow ID
+          gh api repos/$REPO/actions/workflows --jq '.workflows[].id' | while read wid; do
+            # Ambil semua run untuk workflow tsb, buang 3 terbaru, hapus sisanya
+            gh api repos/$REPO/actions/workflows/$wid/runs --paginate \
+              --jq '.workflow_runs | .[3:] | .[].id' | while read rid; do
+              echo "Deleting run $rid (workflow $wid)"
+              gh api -X DELETE repos/$REPO/actions/runs/$rid
+            done
+          done
