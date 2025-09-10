@@ -8,7 +8,7 @@ on:
       - "docs/Whitepaper.md"
       - "docs/roadmap*"
       - ".github/workflows/roadmap-auto-check.yml"
-      
+
   # Auto-jalan ketika workflow tertentu selesai
   workflow_run:
     workflows:
@@ -45,14 +45,28 @@ permissions:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-  
+
 jobs:
   update-roadmap:
-    # ⬇️ tambahkan push di sini
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') }}
+    # tambah guard: push | dispatch | workflow_run sukses & dari main
+    if: ${{ github.event_name == 'workflow_dispatch'
+           || github.event_name == 'push'
+           || (github.event_name == 'workflow_run'
+               && github.event.workflow_run.conclusion == 'success'
+               && github.event.workflow_run.head_branch == 'main') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # ambil full history supaya aman untuk rebase/pull
+
+      - name: Prepare git (identity & rebase latest)
+        shell: bash
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # rebase terhadap branch default (fallback ke 'main' jika variabel kosong)
+          git pull --rebase origin "${GITHUB_REF_NAME:-main}" || true
 
       - name: Decide ROADMAP key
         id: key
@@ -102,8 +116,8 @@ jobs:
           mark_done "docs/Whitepaper.md"
 
           if git status --porcelain | grep -E "README\.md|docs/Whitepaper\.md" >/dev/null; then
-            git config user.name  "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            # rebase sekali lagi untuk jaga-jaga bila ada push baru saat langkah di atas
+            git pull --rebase origin "${GITHUB_REF_NAME:-main}" || true
             git add README.md docs/Whitepaper.md
             git commit -m "chore(roadmap): mark ${KEY} done on ${DATE} (green badge)"
             git push
@@ -120,4 +134,3 @@ jobs:
           if-no-files-found: ignore
           retention-days: 1
           compression-level: 6
-          
