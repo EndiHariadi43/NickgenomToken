@@ -2,27 +2,11 @@ name: Verify on BscScan
 
 on:
   workflow_dispatch:
-    inputs:
-      network:
-        description: "Pilih network"
-        type: choice
-        required: true
-        options: [bsc, bscTestnet]
-        default: bsc
-      contract:
-        description: 'Qualified name, contoh: "contracts/token/NickgenomPermit.sol:NickgenomPermit"'
-        required: true
-        default: "contracts/token/NickgenomPermit.sol:NickgenomPermit"
-        type: string
-      args_file:
-        description: "Path file JS/TS untuk argumen constructor (opsional)"
-        required: false
-        type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-  
+
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -30,57 +14,51 @@ jobs:
       contents: read
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-      
-      - run: |
+          cache: 'npm'
+
+      - name: Show versions
+        run: |
           node -v
           npm -v
-          npm config get engine-strict --location=project      
 
-      - name: Install dependencies
+      - name: Install deps
         run: |
-          npm ci || npm ci --legacy-peer-deps
+          if [ -f package-lock.json ]; then
+            npm ci || npm ci --legacy-peer-deps
+          else
+            npm install --legacy-peer-deps
+          fi
 
-      - name: Compile contracts
-        env:
-          BSC_RPC_URL: ${{ secrets.BSC_RPC_URL }}
-          BSC_TESTNET_RPC_URL: ${{ secrets.BSC_TESTNET_RPC_URL }}
+      - name: Clean & Compile (force)
         run: |
           npx hardhat clean
-          npx hardhat compile
+          npx hardhat compile --force
 
-      - name: Verify contract on BscScan
+      - name: Check required secrets
+        run: |
+          [ -n "${{ secrets.BSCSCAN_API_KEY }}" ] || { echo "Missing BSCSCAN_API_KEY"; exit 1; }
+          [ -n "${{ secrets.CONTRACT_ADDRESS_BSC }}" ] || { echo "Missing CONTRACT_ADDRESS_BSC"; exit 1; }
+
+      - name: Verify on BscScan (BSC mainnet)
         env:
           BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
+          ADDR: ${{ secrets.CONTRACT_ADDRESS_BSC }}
         run: |
-          NET="${{ inputs.network }}"
-          CONTRACT_QN="${{ inputs.contract }}"
+          echo "Verifying address: $ADDR"
+          npx hardhat verify --network bsc "$ADDR" \
+            --contract "contracts/token/NickgenomPermit.sol:NickgenomPermit"
 
-          # Ambil alamat kontrak otomatis dari secrets
-          if [ "$NET" = "bsc" ]; then
-            ADDR="${{ secrets.CONTRACT_ADDRESS_BSC }}"
-          else
-            ADDR="${{ secrets.CONTRACT_ADDRESS_BSCTESTNET }}"
-          fi
-
-          if [ -z "$ADDR" ]; then
-            echo "❌ Secret alamat kontrak kosong untuk $NET"
-            exit 1
-          fi
-
-          echo "🔎 Verifying $CONTRACT_QN at $ADDR on $NET …"
-
-          CMD="npx hardhat verify --network $NET --contract \"$CONTRACT_QN\" $ADDR"
-          if [ -n "${{ inputs.args_file }}" ]; then
-            CMD="$CMD --constructor-args \"${{ inputs.args_file }}\""
-          fi
-
-          echo "➡️ $CMD"
-          eval $CMD
+      - name: Upload build-info
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hardhat-build-info-${{ github.sha }}
+          path: artifacts/build-info/
+          if-no-files-found: ignore
+          retention-days: 1
+          compression-level: 6
