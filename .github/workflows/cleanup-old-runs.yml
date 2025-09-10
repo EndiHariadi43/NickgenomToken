@@ -1,28 +1,36 @@
-name: Cleanup old workflow runs (gh api)
+name: Cleanup Old Workflow Runs
 
 on:
-  schedule:
-    - cron: "0 3 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      workflow_name:
+        description: "Workflow name to clean (e.g., Compile, Test, Solidity CI, Verify on BscScan)"
+        required: true
+        type: string
+      keep:
+        description: "How many latest runs to keep"
+        required: true
+        default: "3"
+        type: choice
+        options: ["1", "2", "3", "5", "10"]
 
 permissions:
   actions: write
+  contents: read
+
+concurrency:
+  group: cleanup-${{ github.event.inputs.workflow_name }}
+  cancel-in-progress: true
 
 jobs:
   cleanup:
     runs-on: ubuntu-latest
     steps:
-      - name: Keep only last 3 runs per workflow
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-        run: |
-          # Ambil semua workflow ID
-          gh api repos/$REPO/actions/workflows --jq '.workflows[].id' | while read wid; do
-            # Ambil semua run untuk workflow tsb, buang 3 terbaru, hapus sisanya
-            gh api repos/$REPO/actions/workflows/$wid/runs --paginate \
-              --jq '.workflow_runs | .[3:] | .[].id' | while read rid; do
-              echo "Deleting run $rid (workflow $wid)"
-              gh api -X DELETE repos/$REPO/actions/runs/$rid
-            done
-          done
+      - name: Delete old runs (keep N)
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          workflow: ${{ github.event.inputs.workflow_name }}
+          retain_days: 0
+          keep_minimum_runs: ${{ github.event.inputs.keep }}
