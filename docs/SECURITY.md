@@ -25,7 +25,7 @@ If you discover a security issue or impersonation attempt, please open a confide
 Include transaction hashes, addresses, and steps to reproduce if relevant.
 
 ### How to Report
-Send an email to: security@nickgenom.io or endi.linux.mint@gmail.com
+Send an email to: 59972539+EndiHariadi43@users.noreply.github.com
 
 Include the following information:
 - Description of the vulnerability
